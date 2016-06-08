@@ -12,6 +12,29 @@ A description of the sediment collection and leaf processing in found in [Notes_
 
 Organic matter was determined by LOI at 550 dC
 
+### Variable Descriptions
+#### Entered Variables
+
+* sample = the type of material in the sample: "sed" = sediment slurry used to fill the bottle, "leaf" = 10, 13.5 mm leaf discs
+
+* cruc.num = the ID of the crucible
+
+* cruc.mass = the mass of the empty crucible (g)
+
+* cruc.samp = the mass of the crucible filled with dry sample (g)
+
+* cruc.ash = the mass of the crucible and ash after 5 h at 550 dC (g)
+
+#### Calculated Variables
+
+* dry.mass = the dry mass of the sample (g)
+
+* ash mass = the mass of the ash after LOI (g)
+
+* om.mass = the mass lost during LOI: the mass of the organic portion of the sample (g)
+
+* prop.om = the proportion of the original mass that was organic 
+
 ### R Code
 
     sample <- c(rep("sed", 3), rep("leaf", 9))
@@ -27,3 +50,9 @@ Organic matter was determined by LOI at 550 dC
     ash.mass <- cruc.ash - cruc.mass
     om.mass <- dry.mass - ash.mass
     prop.om <- (om.mass / dry.mass) 
+
+### Make Data File
+
+    om <- data.frame(sample, cruc.num, cruc.mass, cruc.samp, cruc.ash, leaf.num, dry.mass, ash.mass, om.mass, prop.om)
+
+    write.table(om, "./data/inital_om.csv", row.names = F, quote = F, sep = ",")
