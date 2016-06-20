@@ -10,6 +10,8 @@
 
 ### Modified
 
+* 20 June 2016 - KF - editied breakdown notes
+
 ## Description
 
 This experiment is designed to evaluate the impact of the sediment environment on leaf litter decomposition. 
@@ -18,11 +20,13 @@ Senecent tulip poplar leaves were incubated in 250 ml jars, either in contact wi
 
 Details about the experimental set up can be found on files:
 
+[https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/lab_notes/Notes_on_set_up.md](https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/lab_notes/Notes_on_set_up.md)
+
 ## Breakdown Procedure 
 
 1) Gently siphon off the overlying water until the leaves on the shelf are exposed.
 
-2) Remove 2 leaf disks ifrom the shelf and store in MeOH in freezer for Ergosterol
+2) Remove 2 leaf disks from the shelf and store in MeOH in freezer for Ergosterol
 
 3) Remove the remaining 8 leaf disks from the shelf and very gently rinse with DI on the seive.
 
