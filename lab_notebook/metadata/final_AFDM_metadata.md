@@ -23,6 +23,8 @@ These data are for the preparation of the leaves for ash mass in the sediment pr
 
 * Modified
 
+  * 29 June 2016 - KF - changed the CrucLeafDM mass from 29.2417 to 28.2417 since the larger number was likely a data entry mistake
+
 ## Variable Descriptions
 
 * Bottle = the identifying number of the experimental bottle

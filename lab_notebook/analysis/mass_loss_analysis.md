@@ -1,0 +1,111 @@
+# Analysis of the mass loss of the leaves in the sediment priming experiment.
+
+## Metadata
+
+* file created 29 June 2016 - KF
+
+* Modified: 
+
+### Description
+
+These analyses are to evaluate the change in mass of the leaves in the sediment priming experiment. Details on the experimental set-up and execution can be found: [https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/lab_notes/Notes_on_set_up.md](https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/lab_notes/Notes_on_set_up.md) & [https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/lab_notes/Notes_on_breakdown.md](https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/lab_notes/Notes_on_breakdown.md)
+
+## Analysis
+
+### Import data
+
+    leaf.initial <- read.table("./data/inital_om.csv", header = T, sep = ",")
+    leaf.final <- read.table("./data/final_AFDM.csv", header = T, sep = ",")
+
+### Determine Average inital leaf mass
+
+The initial leaf mass samples consisted of 10 leaves
+
+    init.leaf.mass <- leaf.initial$om.mass[leaf.initial$sample == "leaf"]
+    sing.init.leaf.mass <- init.leaf.mass / leaf.initial$leaf.num[leaf.initial$sample == "leaf"]
+    mean.init.mass <- mean(sing.init.leaf.mass)
+
+~~~~
+# mean mass of a single leaf prior to the beginning the exp
+  
+> mean.init.mass
+[1] 0.003541111
+
+~~~~
+  
+### Determine Average Final AFDM
+  
+    final.DM <- leaf.final$CrucLeafDM - leaf.final$CrucMass
+    final.AM <- leaf.final$CrucAM - leaf.final$CrucMass
+    final.AFDM <- final.DM - final.AM
+
+Since there were different numbers of leaves in the crucibles `final.AFDM` is the mass of the total leaves in the crucible
+
+    final.leaf.AFDM <- final.AFDM / leaf.final$LeafNum
+
+###  Determine Mass Lost
+
+    AFDM.loss <- mean.init.mass - final.leaf.AFDM
+  
+### Compare mass loss by position
+
+    par(las = 1)
+    plot(AFDM.loss * 1000 ~ jitter(as.numeric(Position), 0.5), data = leaf.final, ylim = c(0, 2), xlim = c(0, 3), axes = F, xlab = " ", ylab = "Mass Loss (mg AFDM)")
+    axis(2)
+    axis(1, c("Sediment", "Water Column"), at = c(1, 2))
+    box()
+    dev.copy(jpeg, "./output/plots/mass_loss.jpg")
+    dev.off()
+
+![Mass lost from leaves in the sediments or water column](../output/plots/mass_loss.jpg)
+
+Mass lost from leaves in the sediments or water column
+
+#### Statistical Analysis
+
+One-way ANOVA of Position
+
+     anova(lm(AFDM.loss ~ Position, data = leaf.final))
+
+~~~~
+
+> anova(lm(AFDM.loss ~ Position, data = leaf.final))
+Analysis of Variance Table
+
+Response: AFDM.loss
+Df     Sum Sq    Mean Sq F value Pr(>F)
+Position   1 2.8010e-07 2.8006e-07   1.181 0.2915
+Residuals 18 4.2685e-06 2.3714e-07       
+
+~~~~
+  
+Two-way ANOVA including the effect of the bottles
+
+    anova(lm(AFDM.loss ~ Position * Bottle, data = leaf.final))
+
+~~~~
+
+  Analysis of Variance Table
+
+Response: AFDM.loss
+Df     Sum Sq    Mean Sq F value Pr(>F)
+Position         1 2.8010e-07 2.8006e-07  1.0915 0.3117
+Bottle           1 4.3200e-08 4.3205e-08  0.1684 0.6870
+Position:Bottle  1 1.2000e-07 1.2002e-07  0.4678 0.5038
+Residuals       16 4.1052e-06 2.5658e-07 
+
+~~~~
+  
+##### Determine the difference between the loss in the water and sed leaves
+  
+    loss.diff <- AFDM.loss[leaf.final$Position == "Sed"] - AFDM.loss[leaf.final$Position == "Top"]
+
+    par(las = 1)
+    plot(loss.diff * 1000 ~ leaf.final$Bottle[leaf.final$Position == "Top"], xlab = "Bottle", ylab = "Sediment Mass Loss - Water Col. Mass Loss (mg AFDM)")
+    abline(h = 0)
+    dev.copy(jpeg, "./output/plots/mass_loss_diff.jpg")
+    dev.off()
+
+![Sediment Mass Loss - Water Column Mass Loss](../output/plots/mass_loss_diff.jpg)
+
+Sediment Mass Loss - Water Column Mass Loss
