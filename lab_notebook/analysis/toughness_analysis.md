@@ -78,6 +78,7 @@ mean of x mean of y
     dev.off()
 
 ![Boxplot mass required to puncture the leaf](../output/plots/toughness.jpg)
+
 Boxplot of the mass (g) required to puncture each leaf with a standard punch.
 
     par(las = 1)
@@ -88,3 +89,5 @@ Boxplot of the mass (g) required to puncture each leaf with a standard punch.
     dev.off()
 
 ![Plot of the mean mass required to punch the leaves in each bottle.](../output/plots/toughness_by_bottle.jpg)
+
+Plot of the mean mass required to punch the leaves in each bottle.
