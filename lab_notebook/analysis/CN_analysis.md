@@ -70,6 +70,7 @@ $top
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
   43.59   44.45   45.21   45.02   45.40   46.28  0.847074
 ~~~~
+ 
 ## Analysis of the Effect of Position on CN
 
     par(las = 1)
@@ -77,7 +78,7 @@ $top
     axis(2)
     axis(1, c("Sediment Contact", "No Sediment Contact"), at = c(1, 2))
     box()
-    dev.copy(jpeg, "./ouput/plots/CN_by_position.jpg")
+    dev.copy(jpeg, "./output/plots/CN_by_position.jpg")
     dev.off()
 
 ![CN by leaf Position](../output/plots/CN_by_position.jpg)
@@ -100,7 +101,7 @@ Residuals 18 218.74  12.152
     axis(2)
     axis(1, c("Sediment Contact", "No Sediment Contact"), at = c(1, 2))
     box()
-    dev.copy(jpeg, "./ouput/plots/percN_by_position.jpg")
+    dev.copy(jpeg, "./output/plots/percN_by_position.jpg")
     dev.off()
 
 ![Percent N by leaf Position](../output/plots/percN_by_position.jpg)
@@ -123,7 +124,7 @@ Residuals 18 0.58620 0.032567
     axis(2)
     axis(1, c("Sediment Contact", "No Sediment Contact"), at = c(1, 2))
     box()
-    dev.copy(jpeg, "./ouput/plots/percC_by_position.jpg")
+    dev.copy(jpeg, "./output/plots/percC_by_position.jpg")
     dev.off()
 
 ![Percent C by leaf Position](../output/plots/percC_by_position.jpg)

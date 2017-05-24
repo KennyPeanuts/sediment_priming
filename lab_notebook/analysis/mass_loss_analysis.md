@@ -46,7 +46,22 @@ Since there were different numbers of leaves in the crucibles `final.AFDM` is th
 ###  Determine Mass Lost
 
     AFDM.loss <- mean.init.mass - final.leaf.AFDM
-  
+
+    tapply(AFDM.loss * 1000, leaf.final$Position, summary) 
+    tapply(AFDM.loss * 1000, leaf.final$Position, sd)
+ 
+~~~~
+AFDM Loss from each postion (mg)
+
+$Sed
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
+0.06111 1.02600 1.05100 1.10100 1.38600 1.60100  0.4320494
+
+$Top
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max.  SD
+0.001111 0.416100 0.961100 0.864400 1.226000 1.621000  0.5362904
+~~~~
+ 
 ### Compare mass loss by position
 
     par(las = 1)
@@ -109,3 +124,21 @@ Residuals       16 4.1052e-06 2.5658e-07
 ![Sediment Mass Loss - Water Column Mass Loss](../output/plots/mass_loss_diff.jpg)
 
 Sediment Mass Loss - Water Column Mass Loss
+
+##### Determine the 95% CI of the difference in mass loss
+
+    t.test(loss.diff)
+
+~~~~
+One Sample t-test
+
+data:  loss.diff
+t = 0.8572, df = 9, p-value = 0.4136
+alternative hypothesis: true mean is not equal to 0
+95 percent confidence interval:
+ -0.0003879115  0.0008612448
+sample estimates:
+   mean of x 
+0.0002366667 
+~~~~
+     
