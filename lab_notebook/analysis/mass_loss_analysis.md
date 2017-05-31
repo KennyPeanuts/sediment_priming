@@ -65,9 +65,9 @@ $Top
 ### Compare mass loss by position
 
     par(las = 1)
-    plot(AFDM.loss * 1000 ~ jitter(as.numeric(Position), 0.5), data = leaf.final, ylim = c(0, 2), xlim = c(0, 3), axes = F, xlab = " ", ylab = "Mass Loss (mg AFDM)")
+    plot(AFDM.loss * 1000 ~ Position, data = leaf.final, ylim = c(0, 2), xlim = c(.50, 2.5), axes = F, xlab = "Position of the Leaves ", ylab = "Mass Loss (mg AFDM)", col = "gray")
     axis(2)
-    axis(1, c("Sediment", "Water Column"), at = c(1, 2))
+    axis(1, c("Sediment Contact", "No Sed. Contact"), at = c(1, 2))
     box()
     dev.copy(jpeg, "./output/plots/mass_loss.jpg")
     dev.off()

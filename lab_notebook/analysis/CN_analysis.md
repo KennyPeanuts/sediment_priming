@@ -96,10 +96,10 @@ Residuals 18 218.74  12.152
  
 ## Analysis of the Effect of Position on Percent N
 
-    par(las = 1)
-    plot(percN ~ pos, data = leaf, ylim = c(0, 2), ylab = "Pecent N", xlab = "Leaf Position", col = "plum3", axes = F)
-    axis(2)
-    axis(1, c("Sediment Contact", "No Sediment Contact"), at = c(1, 2))
+    par(las = 1, lwd = 1)
+    plot(percN ~ pos, data = leaf, ylim = c(0, 2), ylab = "Percent N", xlab = "Position of the Leaves", col = "gray", axes = F)
+    axis(2, cex.lab = 1.5)
+    axis(1, c("Sediment Contact", "No Sed. Contact"), at = c(1, 2), cex.lab = 1.5)
     box()
     dev.copy(jpeg, "./output/plots/percN_by_position.jpg")
     dev.off()
@@ -120,9 +120,9 @@ Residuals 18 0.58620 0.032567
 ## Analysis of the Effect of Position on Percent C
 
     par(las = 1)
-    plot(percC ~ pos, data = leaf, ylim = c(0, 50), ylab = "Percent C", xlab = "Leaf Position", col = "lightblue", axes = F)
+    plot(percC ~ pos, data = leaf, ylim = c(0, 50), ylab = "Percent C", xlab = "Position of the Leaves", col = "gray", axes = F)
     axis(2)
-    axis(1, c("Sediment Contact", "No Sediment Contact"), at = c(1, 2))
+    axis(1, c("Sediment Contact", "No Sed. Contact"), at = c(1, 2))
     box()
     dev.copy(jpeg, "./output/plots/percC_by_position.jpg")
     dev.off()
