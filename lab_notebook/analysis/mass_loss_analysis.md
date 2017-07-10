@@ -77,8 +77,26 @@ $Top
 Mass lost from leaves in the sediments or water column
 
 #### Statistical Analysis
+##### t-test
 
-One-way ANOVA of Position
+     t.test(AFDM.loss ~ Position, data = leaf.final)
+     
+~~~~
+
+ Welch Two Sample t-test
+
+data:  AFDM.loss by Position
+t = 1.0867, df = 17.22, p-value = 0.2921
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -0.0002223588  0.0006956921
+sample estimates:
+mean in group Sed mean in group Top 
+     0.0011011111      0.0008644444 
+
+~~~~
+
+##### One-way ANOVA of Position
 
      anova(lm(AFDM.loss ~ Position, data = leaf.final))
 
