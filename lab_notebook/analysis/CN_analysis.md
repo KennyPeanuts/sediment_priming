@@ -83,6 +83,25 @@ $top
 
 ![CN by leaf Position](../output/plots/CN_by_position.jpg)
 
+### T-test
+
+    t.test(CN ~ pos, data = leaf)
+
+~~~~
+ Welch Two Sample t-test
+
+data:  CN by pos
+t = -4.3588, df = 10.568, p-value = 0.00125
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -10.243778  -3.346799
+sample estimates:
+mean in group sed mean in group top 
+         27.26926          34.06455 
+~~~~
+
+### ANOVA
+
     anova(lm(CN ~ pos, data = leaf))
 
 ~~~~
@@ -106,6 +125,27 @@ Residuals 18 218.74  12.152
 
 ![Percent N by leaf Position](../output/plots/percN_by_position.jpg)
 
+### T test
+
+    t.test(percN ~ pos, data = leaf)
+
+
+~~~~
+ Welch Two Sample t-test
+
+data:  percN by pos
+t = 0.1983, df = 17.077, p-value = 0.8452
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -0.1542146  0.1862146
+sample estimates:
+mean in group sed mean in group top 
+            1.582             1.566 
+            
+~~~~
+
+### ANOVA
+
     anova(lm(percN ~ pos, data = leaf))
 
 ~~~~
@@ -128,6 +168,25 @@ Residuals 18 0.58620 0.032567
     dev.off()
 
 ![Percent C by leaf Position](../output/plots/percC_by_position.jpg)
+
+### T test
+
+     t.test(percC ~ pos, data = leaf)
+
+~~~~
+ Welch Two Sample t-test
+
+data:  percC by pos
+t = -8.0902, df = 10.371, p-value = 8.509e-06
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -10.349356  -5.896644
+sample estimates:
+mean in group sed mean in group top 
+           36.900            45.023 
+~~~~
+
+### ANOVA
 
      anova(lm(percC ~ pos, data = leaf))
 
