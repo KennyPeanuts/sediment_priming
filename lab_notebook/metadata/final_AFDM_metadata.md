@@ -17,6 +17,7 @@
 ### Modified 
 
 * 21 March 2017 - KF - added calculated variables
+* 25 Aug 2017 - KF - clarified AFDM for single leaf disc or group
 
 ### Description
 
@@ -33,17 +34,19 @@ These data are for the preparation of the leaves for ash mass in the sediment pr
 
 * Bottle = the identifying number of the experimental bottle
 
-* postion = the position of the leaves in the bottle
-  * top = on the shelf above the sediments
-  * sed = resting on the sediment surface
+* Postion = the position of the leaves in the bottle
+  * Top = on the shelf above the sediments
+  * Sed = resting on the sediment surface
 
-*CrucNum = the number that was labeled on the crucible prior to the experiment
+* LeafNum = the number of leaf discs in the crucible
 
-*CrucMass = the weight of the crucible (g)
+* CrucNum = the number that was labeled on the crucible prior to the experiment
 
-*CrucLeafDM = the weight of the crucible and leaf dry mass (g)
+* CrucMass = the weight of the crucible (g)
 
-*CrucAM = the weight of the crucible and ash mass (g)
+* CrucLeafDM = the weight of the crucible and leaf dry mass (g)
+
+* CrucAM = the weight of the crucible and ash mass (g)
 
 # Calculated Variables
 
@@ -53,11 +56,13 @@ These data are for the preparation of the leaves for ash mass in the sediment pr
 
 * AshMass = the total mass of the ash remaining in the crucible after approximatey 4 h at 550 dC (g)
 
-* AFDM = the total ash free dry mass of the leaf discs in the crucible, which is the mass of the sample minus the mass of the ash (g).
+* AFDM_Total = the total ash free dry mass of all the leaf discs in the crucible, which is the mass of the sample minus the mass of the ash (g).
 
 * PropOM = the proportion of the sample mass that is organic matter (i.e., combustable at 550 dC)
 
 * PercOM = the percent of the sample mass that is organic matter (i.e., combustable at 550 dC)
+
+* AFDM = the ash free dry mass of a single leaf disc (g)
 
 ### Import Data
 
@@ -65,15 +70,12 @@ These data are for the preparation of the leaves for ash mass in the sediment pr
 
 ### Variable Calculations
 
-    LeafMass <- leaf$CrucLeafDM - leaf$CrucMass
-    AshMass <- leaf$CrucAM - leaf$CrucMass
-    AFDM <- LeafMass - AshMass
-    PropOM <- AFDM / LeafMass
-    PercOM <- PropOM * 100
-
-### Add Calc Variables to data frame
-
-    leaf <- data.frame(leaf, LeafMass, AshMass, AFDM, PropOM, PercOM)
+    leaf$LeafMass <- leaf$CrucLeafDM - leaf$CrucMass
+    leaf$AshMass <- leaf$CrucAM - leaf$CrucMass
+    leaf$AFDM_Total <- LeafMass - AshMass
+    leaf$PropOM <- AFDM_Total / LeafMass
+    leaf$PercOM <- PropOM * 100
+    leaf$AFDM <- AFDM_Total/leaf$LeafNum
 
 # Write to table
 
