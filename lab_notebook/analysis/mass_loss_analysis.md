@@ -65,7 +65,9 @@ $Top
 ### Compare mass loss by position
 
     par(las = 1)
-    plot(AFDM.loss * 1000 ~ Position, data = leaf.final, ylim = c(0, 2), xlim = c(.50, 2.5), axes = F, xlab = "Position of the Leaves ", ylab = "Mass Loss (mg AFDM)", col = "gray")
+    plot(AFDM.loss * 1000 ~ Position, data = leaf.final, ylim = c(0, 2), xlim = c(.50, 2.5), axes = F, xlab = " ", ylab = "Mass Loss (mg AFDM)", col = "gray")
+    text(1, mean(AFDM.loss[leaf.final$Position == "Sed"] * 1000), "*", cex = 2)
+    text(2, mean(AFDM.loss[leaf.final$Position == "Top"] * 1000), "*", cex = 2)
     axis(2)
     axis(1, c("Sediment Contact", "No Sed. Contact"), at = c(1, 2))
     box()
