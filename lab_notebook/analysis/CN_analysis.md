@@ -116,7 +116,7 @@ Residuals 18 218.74  12.152
 ## Analysis of the Effect of Position on Percent N
 
     par(las = 1, lwd = 1)
-    plot(percN ~ pos, data = leaf, ylim = c(0, 2), ylab = "Percent N", xlab = "Position of the Leaves", col = "gray", axes = F)
+    plot(percN ~ pos, data = leaf, ylim = c(0, 2), ylab = "Percent N", xlab = " ", col = "gray", axes = F)
     axis(2, cex.lab = 1.5)
     axis(1, c("Sediment Contact", "No Sed. Contact"), at = c(1, 2), cex.lab = 1.5)
     box()
@@ -160,7 +160,7 @@ Residuals 18 0.58620 0.032567
 ## Analysis of the Effect of Position on Percent C
 
     par(las = 1)
-    plot(percC ~ pos, data = leaf, ylim = c(0, 50), ylab = "Percent C", xlab = "Position of the Leaves", col = "gray", axes = F)
+    plot(percC ~ pos, data = leaf, ylim = c(0, 50), ylab = "Percent C", xlab = " ", col = "gray", axes = F)
     axis(2)
     axis(1, c("Sediment Contact", "No Sed. Contact"), at = c(1, 2))
     box()
@@ -198,3 +198,23 @@ Response: percC
 pos        1 329.92  329.92  65.452 2.088e-07 ***
 Residuals 18  90.73    5.04  
 ~~~~
+ 
+# Two Row Plot for Manuscript
+
+    par(las = 1, mfcol = c(2, 1), mar = c(0.2, 8, 2.5, 8))
+    plot(percC ~ pos, data = leaf, ylim = c(0, 50), ylab = "Percent C", xlab = " ", col = "gray", axes = F)
+    text(1, mean(leaf$percC[leaf$pos == "sed"]), "*", cex = 2)
+    text(2, mean(leaf$percC[leaf$pos == "top"]), "*", cex = 2)
+    axis(2)
+    box()
+    par(mar = c(2.5, 8, 0.2, 8))
+    plot(percN ~ pos, data = leaf, ylim = c(0, 2), ylab = "Percent N", xlab = " ", col = "gray", axes = F)
+    text(1, mean(leaf$percN[leaf$pos == "sed"]), "*", cex = 2)
+    text(2, mean(leaf$percN[leaf$pos == "top"]), "*", cex = 2)
+    axis(2, cex.lab = 1.5)
+    axis(1, c("Sediment Contact", "No Sed. Contact"), at = c(1, 2), cex.lab = 1.5)
+    box()
+    dev.copy(jpeg, "./output/plots/percC_and_N_by_position.jpg")
+    dev.off()
+
+![Percent C by leaf Position](../output/plots/percC_and_N_by_position.jpg)
