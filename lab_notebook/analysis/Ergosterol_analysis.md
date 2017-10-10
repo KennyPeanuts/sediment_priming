@@ -4,7 +4,8 @@
 
 * 4 October 2017
 
-* Modified: 
+* Modified:
+ * Added summary stats for ergosterol mass per leaf
 
 ### Description
 
@@ -19,6 +20,22 @@ These analyses are to evaluate the Ergosterol Content of the leaves in the sedim
 
 ## Data Summaries
 
+## Ergosterol mass per leaf (ug Ergosterol / leaf disc)
+
+     tapply(erg$Erg_per_leaf, erg$Position, summary)
+     tapply(erg$Erg_per_leaf, erg$Position, sd)
+
+~~~~
+$Sed
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
+0.09457 0.18100 0.23190 0.28440 0.37240 0.55790  0.1534152 
+
+$Top
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
+ 0.3473  0.6070  0.7751  0.8014  0.8757  1.5250  0.3267842 
+
+~~~~
+ 
 ### Mass Normalized Ergosterol (ug Ergosterol / g AFDM)
 
      tapply(erg$Erg_mass_norm, erg$Position, summary)
@@ -110,3 +127,4 @@ mean in group Sed mean in group Top
          9.934036         27.994441 
 
 ~~~~
+
