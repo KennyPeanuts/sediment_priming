@@ -16,7 +16,8 @@ These analyses are to evaluate the Ergosterol Content of the leaves in the sedim
 ### Import data
 
     erg <- read.table("./data/leaf_ergosterol.csv", header = T, sep = ",")
-
+    init_om <- read.table("data/inital_om.csv", header = T, sep = ",")
+    cn <- read.table("data/leaf_disc_CN.csv", header = T, sep = ",")
 
 ## Data Summaries
 
@@ -125,6 +126,100 @@ alternative hypothesis: true difference in means is not equal to 0
 sample estimates:
 mean in group Sed mean in group Top 
          9.934036         27.994441 
+
+~~~~
+
+## Calculation of the mass of C in fungal biomass
+### Background information
+ 
+There is 1 mg fungal dry mass / 5 ug of ergosterol mass (Su et al. 2015 - citing Gessner and Newell 2002)
+
+Fungi had 43% C (Findlay et al 2002)
+
+We measured the % C of the leached leaf litter used in the exp as 45 % - this comes from measurements taken from the leached litter CPOM flux experiment.
+
+### Calculation
+
+Using these estimates we can estimate the fungal dry mass (mg) on the leaves as:
+ 
+    fungal_mass <- 1 / erg$Erg_per_leaf
+
+The carbon mass (mg) of the fungi on the leaves would be:
+ 
+    fungal_C_mass <- fungal_mass * 0.43
+
+#### Data Summary
+
+     tapply(fungal_mass, erg$Position, summary)
+     tapply(fungal_mass, erg$Position, sd)
+
+~~~~
+# Fungal Mass per Leaf (mg)
+ 
+$Sed
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
+  1.792   2.689   4.319   4.649   5.534  10.570  2.6840667 
+
+$Top
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
+ 0.6559  1.1420  1.2910  1.4450  1.6480  2.8800  0.6144893 
+
+~~~~
+ 
+     tapply(fungal_C_mass, erg$Position, summary)
+     tapply(fungal_C_mass, erg$Position, sd)
+
+~~~~
+# Fungal C Mass per Leaf (mg)
+ 
+$Sed
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD 
+ 0.7707  1.1560  1.8570  1.9990  2.3790  4.5470  1.1541487 
+
+$Top
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
+ 0.2820  0.4912  0.5550  0.6211  0.7084  1.2380  0.2642304 
+
+~~~~
+ 
+To estimate the C mass of a single leaf we need to divide the leaf mass by the number of leaves in the mass estimate sample. 
+
+    disc_mass_final <- (erg$LeafMass / erg$LeafNum) * 1000 #converted to mg
+
+    tapply(disc_mass_final, erg$Position, summary)
+    tapply(disc_mass_final, erg$Position, sd)
+    
+~~~~
+# Estimated dry mass of a single leaf disc after incubation (mg)
+ 
+$Sed
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
+  2.920   3.010   3.250   3.355   3.625   4.080  0.4055518 
+
+$Top
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
+  2.200   2.610   2.835   3.031   3.518   4.020  0.6148315 
+
+~~~~
+ 
+The C mass of the leaf discs at the end of the experiment is estimated by the % C of the leaves after to incubation and is in the cs data.frame
+
+The C mass of the leaf discs prior to the incbation is estimated by the % C of the leaves before the incubation and the masses of the leaf discs before the incubation.
+
+The initial leaf disc masses are calculated by dividing the total sample dry mass by the number of leaf discs in the sample and then converting to mg
+
+    disc_mass_init <- (init_om$dry.mass[init_om$sample == "leaf"] / init_om$leaf.num[init_om$sample == "leaf"]) * 1000 # converted to mg 
+
+    disc_C_mass_init <- disc_mass_init * 0.45 # the % C of the leaves prior to incubation = 45%
+
+    summary(disc_C_mass_init)
+    sd(disc_C_mass_init)
+
+~~~~
+# Estimated carbon mass of a single leaf disc prior to incubation (mg)
+ 
+ Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    SD
+  1.309   1.440   1.471   1.496   1.530   1.688  0.1115964
 
 ~~~~
 
