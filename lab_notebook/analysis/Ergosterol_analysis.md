@@ -139,16 +139,15 @@ Fungi had 43% C (Findlay et al 2002)
 We measured the % C of the leached leaf litter used in the exp as 45 % - this comes from measurements taken from the leached litter CPOM flux experiment.
 
 ### Calculation
-
+#### Fungal Mass
 Using these estimates we can estimate the fungal dry mass (mg) on the leaves as:
  
     fungal_mass <- 1 / erg$Erg_per_leaf
 
+#### Funagl C Mass
 The carbon mass (mg) of the fungi on the leaves would be:
  
     fungal_C_mass <- fungal_mass * 0.43
-
-#### Data Summary
 
      tapply(fungal_mass, erg$Position, summary)
      tapply(fungal_mass, erg$Position, sd)
@@ -181,6 +180,8 @@ $Top
  0.2820  0.4912  0.5550  0.6211  0.7084  1.2380  0.2642304 
 
 ~~~~
+
+#### Leaf Disc C Mass Final
  
 To estimate the C mass of a single leaf we need to divide the leaf mass by the number of leaves in the mass estimate sample. 
 
@@ -202,8 +203,36 @@ $Top
 
 ~~~~
  
-The C mass of the leaf discs at the end of the experiment is estimated by the % C of the leaves after to incubation and is in the cs data.frame
+The C mass of the leaf discs at the end of the experiment is estimated by the % C of the leaves after to incubation and the mass of the leaves after incubation
 
+To complete this calculation, I need a treatment level variable for the cn data.frame
+
+     cn.position <- c(rep("top", 10), rep("sed", 10))
+
+I now calculate mass of C for each treatment level:
+
+    disc_C_mass_final_TOP <- disc_mass_final[erg$Position == "Top"] * (cn$percC[cn.position == "top"]) / 100 # convert to proportion
+    disc_C_mass_final_SED <- disc_mass_final[erg$Position == "Sed"] * (cn$percC[cn.position == "sed"]) / 100
+    disc_C_mass_final <- c(disc_C_mass_final_TOP, disc_C_mass_final_SED)
+
+    tapply(disc_C_mass_final, erg$Position, summary) 
+    tapply(disc_C_mass_final, erg$Position, sd)
+
+~~~~
+# Mass of C in each leaf disc after incubation (mg)
+ 
+$Sed
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
+ 0.9126  1.1680  1.2380  1.2380  1.2970  1.5400  0.1785781 
+
+$Top
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
+  1.018   1.173   1.282   1.362   1.596   1.768  0.2639970 
+
+~~~~
+
+#### Leaf Disc C Mass Initial
+ 
 The C mass of the leaf discs prior to the incbation is estimated by the % C of the leaves before the incubation and the masses of the leaf discs before the incubation.
 
 The initial leaf disc masses are calculated by dividing the total sample dry mass by the number of leaf discs in the sample and then converting to mg
@@ -223,3 +252,20 @@ The initial leaf disc masses are calculated by dividing the total sample dry mas
 
 ~~~~
 
+#### Change in C Mass During Incubation
+ 
+    delta_C_mass <- mean(disc_C_mass_init) - disc_C_mass_final
+
+    tapply(delta_C_mass, erg$Position, summary)
+    tapply(delta_C_mass, erg$Position, sd)
+
+~~~~
+# Change in leaf disc C mass during incubation (mg)
+ 
+$Sed
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max.   SD
+-0.04411  0.19880  0.25770  0.25730  0.32750  0.58290   0.1785781 
+
+$Top
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
+-0.2725 -0.1010  0.2136  0.1331  0.3224  0.4773  0.2639970 
