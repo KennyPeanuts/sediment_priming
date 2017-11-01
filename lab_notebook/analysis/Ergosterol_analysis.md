@@ -6,6 +6,7 @@
 
 * Modified:
  * Added summary stats for ergosterol mass per leaf
+ * 1 Nov 2017 - KF - calculated the degree that fungal C mass was from converted leaf C
 
 ### Description
 
@@ -142,9 +143,9 @@ We measured the % C of the leached leaf litter used in the exp as 45 % - this co
 #### Fungal Mass
 Using these estimates we can estimate the fungal dry mass (mg) on the leaves as:
  
-    fungal_mass <- 1 / erg$Erg_per_leaf
+    fungal_mass <- (1 / 5) * erg$Erg_per_leaf # 1 mg fungal mass / 5 ug ergosterl mass
 
-#### Funagl C Mass
+#### Fungal C Mass
 The carbon mass (mg) of the fungi on the leaves would be:
  
     fungal_C_mass <- fungal_mass * 0.43
@@ -157,11 +158,11 @@ The carbon mass (mg) of the fungi on the leaves would be:
  
 $Sed
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
-  1.792   2.689   4.319   4.649   5.534  10.570  2.6840667 
+0.01891 0.03619 0.04638 0.05688 0.07448 0.11160  0.03068304
 
 $Top
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
- 0.6559  1.1420  1.2910  1.4450  1.6480  2.8800  0.6144893 
+0.06946 0.12140 0.15500 0.16030 0.17510 0.30490  0.06535683
 
 ~~~~
  
@@ -172,12 +173,12 @@ $Top
 # Fungal C Mass per Leaf (mg)
  
 $Sed
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD 
- 0.7707  1.1560  1.8570  1.9990  2.3790  4.5470  1.1541487 
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max.  SD 
+0.008133 0.015560 0.019940 0.024460 0.032030 0.047980  0.01319371
 
 $Top
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
- 0.2820  0.4912  0.5550  0.6211  0.7084  1.2380  0.2642304 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.   SD
+0.02987 0.05221 0.06666 0.06892 0.07531 0.13110   0.02810344 
 
 ~~~~
 
@@ -269,3 +270,40 @@ $Sed
 $Top
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
 -0.2725 -0.1010  0.2136  0.1331  0.3224  0.4773  0.2639970 
+
+~~~~
+ 
+    par(las = 1)
+    plot(delta_C_mass ~ erg$Position)
+
+
+#### Percentage of Final Leaf C Mass in the Fungi
+
+The percent of the final leaf C mass that is in fungi:
+ 
+    perc_fungal_C <- (fungal_C_mass / disc_C_mass_final) * 100 
+
+    tapply(perc_fungal_C, erg$Position, summary)
+    tapply(perc_fungal_C, erg$Position, sd)
+    
+~~~~
+# Percent of the final C mass of each leaf disc that is in fungal C
+
+$Sed
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
+ 0.7023  1.2470  1.6030  2.1040  2.4920  4.5980  1.415832
+
+$Top
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
+  2.719   4.534   4.650   4.948   5.295   7.796  1.339615 
+
+~~~~
+ 
+    par(las = 1)
+    plot(perc_fungal_C ~ erg$Position, ylim = c(0, 10), ylab = "Percent of Final Leaf C Mass in Fungal C", xlab = "Position")
+    dev.copy(jpeg, "./output/plots/percent_fungal_c_mass.jpg")
+    dev.off()
+
+![Percent of final leaf C mass in fungal C mass](../output/plots/percent_fungal_c_mass.jpg)
+
+Figure: Percent of the the final leaf C mass in fungal C mass
