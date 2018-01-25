@@ -7,7 +7,8 @@
 * Modified:
  * Added summary stats for ergosterol mass per leaf
  * 1 Nov 2017 - KF - calculated the degree that fungal C mass was from converted leaf C
-
+ * 25 Jan 2018 - KF - tested differences in the percent fungal carbon in the leaves
+ 
 ### Description
 
 These analyses are to evaluate the Ergosterol Content of the leaves in the sediment priming experiment. Details on the experimental set-up and execution can be found: [https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/lab_notes/Notes_on_set_up.md](https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/lab_notes/Notes_on_set_up.md) & [https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/lab_notes/Notes_on_breakdown.md](https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/lab_notes/Notes_on_breakdown.md)
@@ -261,6 +262,7 @@ The initial leaf disc masses are calculated by dividing the total sample dry mas
     tapply(delta_C_mass, erg$Position, sd)
 
 ~~~~
+
 # Change in leaf disc C mass during incubation (mg)
  
 $Sed
@@ -296,6 +298,25 @@ $Sed
 $Top
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
   2.719   4.534   4.650   4.948   5.295   7.796  1.339615 
+
+~~~~
+
+## Test of % Fungal Carbon by Position
+  
+    t.test(perc_fungal_C ~ erg$Position)
+
+~~~~
+
+ Welch Two Sample t-test
+
+data:  perc_fungal_C by erg$Position
+t = -4.613, df = 17.945, p-value = 0.0002176
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -4.138580 -1.548112
+sample estimates:
+mean in group Sed mean in group Top 
+         2.104273          4.947619 
 
 ~~~~
  
