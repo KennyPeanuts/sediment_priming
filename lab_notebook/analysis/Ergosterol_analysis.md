@@ -8,6 +8,7 @@
  * Added summary stats for ergosterol mass per leaf
  * 1 Nov 2017 - KF - calculated the degree that fungal C mass was from converted leaf C
  * 25 Jan 2018 - KF - tested differences in the percent fungal carbon in the leaves
+ * 20 Jan 2018 - KF - recalculated the carbon mass, and percent of fungal C to leaf C based on AFDM rather than leaf dry mass - this better matches with the mass loss analysis
  
 ### Description
 
@@ -185,23 +186,20 @@ $Top
 
 #### Leaf Disc C Mass Final
  
-To estimate the C mass of a single leaf we need to divide the leaf mass by the number of leaves in the mass estimate sample. 
+The estimated AFDM of a single leaf at the end of the incubataion is "AFDM" in the "erg" data frame.     
 
-    disc_mass_final <- (erg$LeafMass / erg$LeafNum) * 1000 #converted to mg
+    tapply(erg$AFDM * 1000, erg$Position, summary)
+    tapply(erg$AFDM * 1000, erg$Position, sd)
 
-    tapply(disc_mass_final, erg$Position, summary)
-    tapply(disc_mass_final, erg$Position, sd)
-    
 ~~~~
 # Estimated dry mass of a single leaf disc after incubation (mg)
  
 $Sed
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
-  2.920   3.010   3.250   3.355   3.625   4.080  0.4055518 
-
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD 
+  1.940   2.155   2.490   2.440   2.515   3.480  0.4320494 
 $Top
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
-  2.200   2.610   2.835   3.031   3.518   4.020  0.6148315 
+  1.920   2.315   2.580   2.677   3.125   3.540  0.5362904 
 
 ~~~~
  
@@ -213,9 +211,9 @@ To complete this calculation, I need a treatment level variable for the cn data.
 
 I now calculate mass of C for each treatment level:
 
-    disc_C_mass_final_TOP <- disc_mass_final[erg$Position == "Top"] * (cn$percC[cn.position == "top"]) / 100 # convert to proportion
-    disc_C_mass_final_SED <- disc_mass_final[erg$Position == "Sed"] * (cn$percC[cn.position == "sed"]) / 100
-    disc_C_mass_final <- c(disc_C_mass_final_TOP, disc_C_mass_final_SED)
+    disc_C_mass_final_TOP <- erg$AFDM[erg$Position == "Top"] * (cn$percC[cn.position == "top"]) / 100 # convert to proportion
+    disc_C_mass_final_SED <- erg$AFDM[erg$Position == "Sed"] * (cn$percC[cn.position == "sed"]) / 100
+    disc_C_mass_final <- c(disc_C_mass_final_TOP, disc_C_mass_final_SED) * 1000 # convert to mg
 
     tapply(disc_C_mass_final, erg$Position, summary) 
     tapply(disc_C_mass_final, erg$Position, sd)
@@ -224,12 +222,12 @@ I now calculate mass of C for each treatment level:
 # Mass of C in each leaf disc after incubation (mg)
  
 $Sed
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
- 0.9126  1.1680  1.2380  1.2380  1.2970  1.5400  0.1785781 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD 
+ 0.6588  0.7806  0.9189  0.8985  0.9689  1.2340 0.1598875 
 
 $Top
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
-  1.018   1.173   1.282   1.362   1.596   1.768  0.2639970 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD
+ 0.8886  1.0500  1.1470  1.2030  1.3910  1.5570 0.2301806 
 
 ~~~~
 
@@ -237,9 +235,9 @@ $Top
  
 The C mass of the leaf discs prior to the incbation is estimated by the % C of the leaves before the incubation and the masses of the leaf discs before the incubation.
 
-The initial leaf disc masses are calculated by dividing the total sample dry mass by the number of leaf discs in the sample and then converting to mg
+The initial leaf disc masses are calculated by dividing the total sample ADDM mass by the number of leaf discs in the sample and then converting to mg
 
-    disc_mass_init <- (init_om$dry.mass[init_om$sample == "leaf"] / init_om$leaf.num[init_om$sample == "leaf"]) * 1000 # converted to mg 
+    disc_mass_init <- (init_om$om.mass[init_om$sample == "leaf"] / init_om$leaf.num[init_om$sample == "leaf"]) * 1000 # converted to mg 
 
     disc_C_mass_init <- disc_mass_init * 0.45 # the % C of the leaves prior to incubation = 45%
 
@@ -249,9 +247,8 @@ The initial leaf disc masses are calculated by dividing the total sample dry mas
 ~~~~
 # Estimated carbon mass of a single leaf disc prior to incubation (mg)
  
- Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    SD
-  1.309   1.440   1.471   1.496   1.530   1.688  0.1115964
-
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max.     SD
+  1.283   1.499   1.597   1.594   1.656   1.899  0.1884964
 ~~~~
 
 #### Change in C Mass During Incubation
@@ -266,18 +263,46 @@ The initial leaf disc masses are calculated by dividing the total sample dry mas
 # Change in leaf disc C mass during incubation (mg)
  
 $Sed
-    Min.  1st Qu.   Median     Mean  3rd Qu.     Max.   SD
--0.04411  0.19880  0.25770  0.25730  0.32750  0.58290   0.1785781 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD 
+ 0.3595  0.6246  0.6746  0.6950  0.8129  0.9347 1598875 
 
 $Top
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
--0.2725 -0.1010  0.2136  0.1331  0.3224  0.4773  0.2639970 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD
+0.03661 0.20300 0.44660 0.39050 0.54370 0.70490 0.2301806 
+
 
 ~~~~
+
+## Test of Change in C mass of a leaf Disc during incbation by position
+
+    t.test(delta_C_mass ~ erg$Position)
+ 
+~~~~
+Welch Two Sample t-test
+
+data:  delta_C_mass by erg$Position
+t = 3.4351, df = 16.045, p-value = 0.003387
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.1166032 0.4922788
+sample estimates:
+mean in group Sed mean in group Top 
+         0.694988          0.390547 
+
+~~~~
+
  
     par(las = 1)
     plot(delta_C_mass ~ erg$Position)
+    text(1, mean(delta_C_mass[erg$Position == "Sed"]), "*", cex = 2)
+    text(2, mean(delta_C_mass[erg$Position == "Top"]), "*", cex = 2)
+    dev.copy(jpeg, "./output/plots/delta_c_mass.jpg")
+    dev.off()
 
+
+![Delta C mass in fungal C mass](../output/plots/delta_c_mass.jpg)
+
+Figure: Change in final leaf C mass
 
 #### Percentage of Final Leaf C Mass in the Fungi
 
@@ -292,12 +317,13 @@ The percent of the final leaf C mass that is in fungi:
 # Percent of the final C mass of each leaf disc that is in fungal C
 
 $Sed
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
- 0.7023  1.2470  1.6030  2.1040  2.4920  4.5980  1.415832
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD
+  1.026   1.609   2.171   2.890   4.331   6.178 1.886135 
 
 $Top
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
-  2.719   4.534   4.650   4.948   5.295   7.796  1.339615 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD
+  3.189   5.141   5.237   5.602   5.987   9.258 1.566612 
+
 
 ~~~~
 
@@ -310,18 +336,20 @@ $Top
  Welch Two Sample t-test
 
 data:  perc_fungal_C by erg$Position
-t = -4.613, df = 17.945, p-value = 0.0002176
+t = -3.4985, df = 17.414, p-value = 0.002672
 alternative hypothesis: true difference in means is not equal to 0
 95 percent confidence interval:
- -4.138580 -1.548112
+ -4.345464 -1.079654
 sample estimates:
 mean in group Sed mean in group Top 
-         2.104273          4.947619 
+         2.889725          5.602283 
 
 ~~~~
  
     par(las = 1)
     plot(perc_fungal_C ~ erg$Position, ylim = c(0, 10), ylab = "Percent of Final Leaf C Mass in Fungal C", xlab = "Position")
+    text(1, mean(perc_fungal_C[erg$Position == "Sed"]), "*", cex = 2)
+    text(2, mean(perc_fungal_C[erg$Position == "Top"]), "*", cex = 2)
     dev.copy(jpeg, "./output/plots/percent_fungal_c_mass.jpg")
     dev.off()
 

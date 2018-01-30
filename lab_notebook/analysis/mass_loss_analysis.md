@@ -4,7 +4,8 @@
 
 * file created 29 June 2016 - KF
 
-* Modified: 
+* Modified:
+    * 30 Jan 2018 - KF - summarized the leaf disc mass
 
 ### Description
 
@@ -26,7 +27,7 @@ The initial leaf mass samples consisted of 10 leaves
     mean.init.mass <- mean(sing.init.leaf.mass)
 
 ~~~~
-# mean mass of a single leaf prior to the beginning the exp
+# mean mass of a single leaf prior to the beginning the exp (g)
   
 > mean.init.mass
 [1] 0.003541111
@@ -42,6 +43,26 @@ The initial leaf mass samples consisted of 10 leaves
 Since there were different numbers of leaves in the crucibles `final.AFDM` is the mass of the total leaves in the crucible
 
     final.leaf.AFDM <- final.AFDM / leaf.final$LeafNum
+
+### Summarize final leaf mass
+
+    tapply(final.leaf.AFDM * 1000, leaf.final$Position, summary)
+    tapply(final.leaf.AFDM * 1000, leaf.final$Position, sd)
+
+~~~~
+# Summary of the average mass of a single leaf disc at the end of the exp, by position (mg)
+ 
+$Sed
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
+  1.940   2.155   2.490   2.440   2.515   3.480  0.4320494 
+
+$Top
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
+  1.920   2.315   2.580   2.677   3.125   3.540  0.5362904 
+
+
+~~~~
+
 
 ###  Determine Mass Lost
 
