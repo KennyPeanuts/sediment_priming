@@ -8,7 +8,7 @@
  * Added summary stats for ergosterol mass per leaf
  * 1 Nov 2017 - KF - calculated the degree that fungal C mass was from converted leaf C
  * 25 Jan 2018 - KF - tested differences in the percent fungal carbon in the leaves
- * 20 Jan 2018 - KF - recalculated the carbon mass, and percent of fungal C to leaf C based on AFDM rather than leaf dry mass - this better matches with the mass loss analysis
+ * 30 Jan 2018 - KF - recalculated the carbon mass, and percent of fungal C to leaf C based on AFDM rather than leaf dry mass - this better matches with the mass loss analysis
  
 ### Description
 
@@ -237,9 +237,32 @@ The C mass of the leaf discs prior to the incbation is estimated by the % C of t
 
 The initial leaf disc masses are calculated by dividing the total sample ADDM mass by the number of leaf discs in the sample and then converting to mg
 
+The inital percent C of the leaf discs comes from the inital leaf samples analyzed during the leached litter experiment [https://github.com/KennyPeanuts/CPOM_Flux/blob/master/lab_notebook/data/leached_litter_CN.csv](https://github.com/KennyPeanuts/CPOM_Flux/blob/master/lab_notebook/data/leached_litter_CN.csv)
+
+Calculation of the average percent C from 2 replicate inital leaf samples:
+
+    initial_leaf_perc_C <- c(45.48, 44.47)
+
+    mean_initial_perc_C <- mean(initial_leaf_perc_C)
+    mean_initial_perc_C
+
+    sd(initial_leaf_perc_C)
+
+~~~~
+# Mean inital percent C in the leaf discs
+ 
+[1] 44.975
+
+# SD of the intial percent C in the leaf discs
+
+[1] 0.7141778
+
+~~~~
+ 
+ 
     disc_mass_init <- (init_om$om.mass[init_om$sample == "leaf"] / init_om$leaf.num[init_om$sample == "leaf"]) * 1000 # converted to mg 
 
-    disc_C_mass_init <- disc_mass_init * 0.45 # the % C of the leaves prior to incubation = 45%
+    disc_C_mass_init <- disc_mass_init * 0.45 # the % C of the leaves prior to incubation rounded up from the mean % C of the intial leaf % C in the leached litter exp. 
 
     summary(disc_C_mass_init)
     sd(disc_C_mass_init)
