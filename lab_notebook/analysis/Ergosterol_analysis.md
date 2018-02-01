@@ -202,7 +202,8 @@ $Top
   1.920   2.315   2.580   2.677   3.125   3.540  0.5362904 
 
 ~~~~
- 
+
+
 The C mass of the leaf discs at the end of the experiment is estimated by the % C of the leaves after to incubation and the mass of the leaves after incubation
 
 To complete this calculation, I need a treatment level variable for the cn data.frame
@@ -211,8 +212,8 @@ To complete this calculation, I need a treatment level variable for the cn data.
 
 I now calculate mass of C for each treatment level:
 
-    disc_C_mass_final_TOP <- erg$AFDM[erg$Position == "Top"] * (cn$percC[cn.position == "top"]) / 100 # convert to proportion
-    disc_C_mass_final_SED <- erg$AFDM[erg$Position == "Sed"] * (cn$percC[cn.position == "sed"]) / 100
+    disc_C_mass_final_TOP <- erg$AFDM[erg$Position == "Top"] * ((cn$percC[cn.position == "top"]) / 100) # convert to proportion
+    disc_C_mass_final_SED <- erg$AFDM[erg$Position == "Sed"] * ((cn$percC[cn.position == "sed"]) / 100)
     disc_C_mass_final <- c(disc_C_mass_final_TOP, disc_C_mass_final_SED) * 1000 # convert to mg
 
     tapply(disc_C_mass_final, erg$Position, summary) 
@@ -287,7 +288,7 @@ Min. 1st Qu.  Median    Mean 3rd Qu.    Max.     SD
  
 $Sed
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD 
- 0.3595  0.6246  0.6746  0.6950  0.8129  0.9347 1598875 
+ 0.3595  0.6246  0.6746  0.6950  0.8129  0.9347 0.1598875 
 
 $Top
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD
@@ -316,7 +317,7 @@ mean in group Sed mean in group Top
 
  
     par(las = 1)
-    plot(delta_C_mass ~ erg$Position)
+    plot(delta_C_mass ~ erg$Position, ylim = c(0, 1))
     text(1, mean(delta_C_mass[erg$Position == "Sed"]), "*", cex = 2)
     text(2, mean(delta_C_mass[erg$Position == "Top"]), "*", cex = 2)
     dev.copy(jpeg, "./output/plots/delta_c_mass.jpg")
