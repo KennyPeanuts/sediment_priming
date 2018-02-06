@@ -224,7 +224,7 @@ The C mass of the leaf discs prior to the incbation is estimated by the % C of t
 
 The initial leaf disc masses are calculated by dividing the total sample AFDM mass by the number of leaf discs in the sample and then converting to mg
 
-##### Initial mass of a single leaf 
+##### Initial C mass of a single leaf 
 
     disc_mass_init <- (init_om$om.mass[init_om$sample == "leaf"] / init_om$leaf.num[init_om$sample == "leaf"]) * 1000 # converted to mg 
 
@@ -297,14 +297,14 @@ mean in group Sed mean in group Top
 
  
     par(las = 1)
-    plot(delta_C_mass ~ leaf.final$Position, ylim = c(0, 1), ylab = "Change in C mass (mg)", xlab = "Position", col = "grey")
+    plot(delta_C_mass ~ leaf.final$Position, ylim = c(0, 1), ylab = "C Mass Loss (mg)", xlab = "Position", col = "grey")
     text(1, mean(delta_C_mass[leaf.final$Position == "Sed"]), "*", cex = 2)
     text(2, mean(delta_C_mass[leaf.final$Position == "Top"]), "*", cex = 2)
     dev.copy(jpeg, "./output/plots/delta_c_mass.jpg")
     dev.off()
 
 
-![Delta C mass in fungal C mass](../output/plots/delta_c_mass.jpg)
+![Delta C mass ](../output/plots/delta_c_mass.jpg)
 
 Figure: Change in final leaf C mass
 
@@ -319,3 +319,94 @@ Figure: Change in final leaf C mass
 ![C Mass plotted against AFDM](../output/plots/C_mass_by_AFDM.jpg)
 
 Figure: C mass plotted against AFDM for the leaf discs
+
+### Determination of the change in N mass in the leaves 
+
+This is done the same way as was donw with C above.
+
+    disc_N_mass_final_TOP <- leaf.final$AFDM[leaf.final$Position == "Top"] * ((cn$percN[cn.position == "top"]) / 100) # convert to proportion
+    disc_N_mass_final_SED <- leaf.final$AFDM[leaf.final$Position == "Sed"] * ((cn$percN[cn.position == "sed"]) / 100)
+    disc_N_mass_final <- c(disc_N_mass_final_TOP, disc_N_mass_final_SED) * 1000 # convert to mg
+
+    tapply(disc_N_mass_final, leaf.final$Position, summary) 
+    tapply(disc_N_mass_final, leaf.final$Position, sd)
+
+~~~~
+# Estimated N mass of a single leaf disc (mg)
+ 
+$Sed
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD
+0.02813 0.03315 0.04009 0.03848 0.04168 0.05150 0.006818064 
+
+$Top
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD
+0.02496 0.03467 0.03793 0.04256 0.05270 0.06726 0.013079830 
+
+~~~~
+ 
+##### Initial N mass of a single leaf 
+
+    disc_N_mass_init <- disc_mass_init * mean(initial_cn$percN / 100)
+
+    summary(disc_N_mass_init)
+    sd(disc_N_mass_init)
+
+~~~~
+# Initial N mass of a single leaf disc prior to incubation (mg)
+ 
+ Min. 1st Qu.  Median    Mean 3rd Qu.    Max.   SD
+0.02807 0.03280 0.03497 0.03488 0.03625 0.04157 0.004125976
+
+~~~~
+ 
+#### Change in N mass following incuabation 
+ 
+    delta_N_mass <- mean(disc_N_mass_init) - disc_N_mass_final
+
+    tapply(delta_N_mass, leaf.final$Position, summary)
+    tapply(delta_N_mass, leaf.final$Position, sd)
+
+~~~~
+# Loss of N mass from a single leaf disc during the incubation (mg)
+
+$Sed
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. SD
+-0.016620 -0.006802 -0.005206 -0.003605  0.001731  0.006750 0.006818064 
+
+$Top
+      Min.    1st Qu.     Median       Mean    3rd Qu.       Max. SD
+-0.0323800 -0.0178200 -0.0030520 -0.0076760  0.0002059  0.0099200 0.013079830
+
+~~~~
+
+##### Test of N Mass Loss
+ 
+     t.test(delta_N_mass ~ leaf.final$Position)
+
+~~~~
+ 
+Welch Two Sample t-test
+
+data:  delta_N_mass by leaf.final$Position
+t = 0.8729, df = 13.555, p-value = 0.3979
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -0.005963507  0.014106707
+sample estimates:
+mean in group Sed mean in group Top 
+     -0.003604656      -0.007676256 
+
+~~~~
+ 
+##### Plot of N Mass Loss 
+ 
+    par(las = 1)
+    plot(delta_N_mass ~ leaf.final$Position, ylim = c(-0.04, 0.01), ylab = "N Mass Loss (mg)", xlab = "Position", col = "grey")
+    text(1, mean(delta_N_mass[leaf.final$Position == "Sed"]), "*", cex = 2)
+    text(2, mean(delta_N_mass[leaf.final$Position == "Top"]), "*", cex = 2)
+    dev.copy(jpeg, "./output/plots/delta_n_mass.jpg")
+    dev.off()
+
+
+![Delta N mass ](../output/plots/delta_n_mass.jpg)
+ 
