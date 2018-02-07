@@ -4,7 +4,8 @@
 
 * file created 12 Jan 2016
 
-* Modified: 
+* Modified:
+  * 7 Feb 2018 - KF - added correlation with CN
 
 ### Description
 
@@ -15,6 +16,7 @@ These analyses are to evaluate the toughness of the leaves in the sediment primi
 ### Import data
 
     tough <- read.table("./data/leaf_toughness.csv", header = T, sep = ",")
+    cn <- read.table("./data/leaf_disc_CN.csv", header = T, sep = ",")
 
 ## Analysis of the Effect of Position on Toughness
 
@@ -25,6 +27,14 @@ Three replicate leaves were haphazardly selected from each bottle and run on the
     mean.tough.top <- as.numeric(tapply(tough$mass[tough$position == "top"], tough$bottle[tough$position == "top"], mean))
 
     mean.tough.sed <- as.numeric(tapply(tough$mass[tough$position == "sed"], tough$bottle[tough$position == "sed"], mean))
+
+### Create data.frame with mean toughness values
+
+    bottle <- rep(1:10, 2)
+    Position <- c(rep("Top", 10), rep("Sed", 10))
+    mean.tough <- c(mean.tough.top, mean.tough.sed)
+
+    mean_tough <- data.frame(Position, bottle, mean.tough)
 
 #### Summary Statistics
 
@@ -93,3 +103,15 @@ Boxplot of the mass (g) required to puncture each leaf with a standard punch.
 ![Plot of the mean mass required to punch the leaves in each bottle.](../output/plots/toughness_by_bottle.jpg)
 
 Plot of the mean mass required to punch the leaves in each bottle.
+
+### Correlation of toughness with perc C
+#### All the points
+     tough_by_cn_mod <- lm(mean.tough ~ cn$percC)
+     summary(tough_by_cn_mod)
+
+     tough_by_cn_pos_mod <- lm(mean.tough ~ cn$percC * mean_tough$Position)
+     summary(tough_by_cn_pos_mod)
+
+     plot(cn$percC[mean_tough$Position == "Top"], mean_tough$mean.tough[mean_tough$Position == "Top"], ylim = c(0, 60), xlim = c(0, 60))
+     points(cn$percC[mean_tough$Position == "Sed"], mean_tough$mean.tough[mean_tough$Position == "Sed"], pch = 19)
+     abline(tough_by_cn_mod)
