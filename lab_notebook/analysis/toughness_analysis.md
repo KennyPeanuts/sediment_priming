@@ -105,13 +105,107 @@ Boxplot of the mass (g) required to puncture each leaf with a standard punch.
 Plot of the mean mass required to punch the leaves in each bottle.
 
 ### Correlation of toughness with perc C
-#### All the points
-     tough_by_cn_mod <- lm(mean.tough ~ cn$percC)
-     summary(tough_by_cn_mod)
+#### Percent C
+##### one-way without position 
 
-     tough_by_cn_pos_mod <- lm(mean.tough ~ cn$percC * mean_tough$Position)
-     summary(tough_by_cn_pos_mod)
+     tough_by_percC_mod <- lm(mean.tough ~ cn$percC)
+     summary(tough_by_percC_mod)
 
-     plot(cn$percC[mean_tough$Position == "Top"], mean_tough$mean.tough[mean_tough$Position == "Top"], ylim = c(0, 60), xlim = c(0, 60))
+~~~~
+# linear regression of toughness by percent C
+ 
+Call:
+lm(formula = mean.tough ~ cn$percC)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-12.563  -5.878  -1.897   6.788  17.859 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -36.9047    17.0757  -2.161 0.044399 *  
+cn$percC      1.6325     0.4143   3.941 0.000959 ***
+
+Residual standard error: 8.497 on 18 degrees of freedom
+Multiple R-squared:  0.4631, Adjusted R-squared:  0.4333 
+F-statistic: 15.53 on 1 and 18 DF,  p-value: 0.0009589
+
+~~~~
+
+##### two-way ANCOVA with percC * Position
+ 
+     tough_by_percC_pos_mod <- lm(mean.tough ~ cn$percC * mean_tough$Position)
+     anova(tough_by_percC_pos_mod)
+
+~~~~
+# Two-way ANCOVA with percent C * Position
+ 
+Analysis of Variance Table
+
+Response: mean.tough
+                             Df  Sum Sq Mean Sq F value    Pr(>F)    
+cn$percC                      1 1121.03 1121.03 16.6815 0.0008646 ***
+mean_tough$Position           1  222.63  222.63  3.3128 0.0874988 .  
+cn$percC:mean_tough$Position  1    1.67    1.67  0.0248 0.8767680    
+Residuals                    16 1075.23   67.20       
+
+~~~~
+
+#### Percent N
+##### one-way without Position
+
+     tough_by_percN_mod <- lm(mean.tough ~ cn$percN)
+     summary(tough_by_percN_mod)
+
+~~~~
+# linear regression of toughness by percN  
+
+Call:
+lm(formula = mean.tough ~ cn$percN)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-18.0547  -9.8586  -0.9812   7.6055  18.5262 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)  
+(Intercept)    64.57      22.51   2.869   0.0102 *
+cn$percN      -21.99      14.21  -1.547   0.1393  
+
+Residual standard error: 10.89 on 18 degrees of freedom
+Multiple R-squared:  0.1173, Adjusted R-squared:  0.06831 
+F-statistic: 2.393 on 1 and 18 DF,  p-value: 0.1393
+
+~~~~
+ 
+##### two-way ANCOVA with percN * Position
+ 
+     tough_by_percN_pos_mod <- lm(mean.tough ~ cn$percN * mean_tough$Position)
+     anova(tough_by_percN_pos_mod)
+
+~~~~
+# two-way ANCOVA with percN * Position
+ 
+Analysis of Variance Table
+
+Response: mean.tough
+                             Df  Sum Sq Mean Sq F value   Pr(>F)    
+cn$percN                      1  284.04  284.04  5.6166 0.030699 *  
+mean_tough$Position           1 1284.06 1284.06 25.3908 0.000121 ***
+cn$percN:mean_tough$Position  1   43.30   43.30  0.8562 0.368542    
+Residuals                    16  809.15   50.57     
+
+~~~~
+     plot(cn$percC[mean_tough$Position == "Top"], mean_tough$mean.tough[mean_tough$Position == "Top"], ylim = c(0, 60), xlim = c(0, 60), ylab = "Toughness (g regured to puncture leaf)", xlab = "Percent C or N")
      points(cn$percC[mean_tough$Position == "Sed"], mean_tough$mean.tough[mean_tough$Position == "Sed"], pch = 19)
-     abline(tough_by_cn_mod)
+     points(cn$percN[mean_tough$Position == "Top"], mean_tough$mean.tough[mean_tough$Position == "Top"], pch = 2)
+     points(cn$percN[mean_tough$Position == "Sed"], mean_tough$mean.tough[mean_tough$Position == "Sed"], pch = 17)
+     #points(cn$CN[mean_tough$Position == "Top"], mean_tough$mean.tough[mean_tough$Position == "Top"], pch = 23)
+     #points(cn$CN[mean_tough$Position == "Sed"], mean_tough$mean.tough[mean_tough$Position == "Sed"], pch = 18)
+     dev.copy(jpeg, "./output/plots/tough_by_percC_percN.jpg")
+     dev.off()
+
+
+![Plot of the mean mass required to punch the leaves by percent C or N](../output/plots/tough_by_percC_N.jpg)
+
+Toughness by percent C (circles) or N (triangles) for leaves in contact with the sediments (open) or not in contact with the sediments (closed).
