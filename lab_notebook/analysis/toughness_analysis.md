@@ -206,6 +206,6 @@ Residuals                    16  809.15   50.57
      dev.off()
 
 
-![Plot of the mean mass required to punch the leaves by percent C or N](../output/plots/tough_by_percC_N.jpg)
+![Plot of the mean mass required to punch the leaves by percent C or N](../output/plots/tough_by_percC_percN.jpg)
 
 Toughness by percent C (circles) or N (triangles) for leaves in contact with the sediments (open) or not in contact with the sediments (closed).
