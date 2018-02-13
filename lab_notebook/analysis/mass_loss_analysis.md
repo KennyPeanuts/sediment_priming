@@ -54,6 +54,25 @@ Briefly, each of the initial samples contained 20, 10 mm leaf discs that were cu
 
     initial_cn <- data.frame(rep, percC, percN, CN)
 
+##### Summary of Initial CN data
+
+    summary(initial_cn)
+    sd(initial_cn$percC)
+    sd(initial_cn$percN)
+    sd(initial_cn$CN)
+
+~~~~
+
+rep       percC           percN              CN       
+ A:1   Min.   :44.47   Min.   :0.9400   Min.   :50.39  
+ B:1   1st Qu.:44.80   1st Qu.:0.9625   1st Qu.:51.91  
+       Median :45.13   Median :0.9850   Median :53.43  
+       Mean   :45.13   Mean   :0.9850   Mean   :53.43  
+       3rd Qu.:45.47   3rd Qu.:1.0075   3rd Qu.:54.95  
+       Max.   :45.80   Max.   :1.0300   Max.   :56.47  
+       SD: 0.940452    SD: 0.06363961   SD: 4.298354
+
+~~~~
 ### Determine Average Final AFDM
   
     final.DM <- leaf.final$CrucLeafDM - leaf.final$CrucMass

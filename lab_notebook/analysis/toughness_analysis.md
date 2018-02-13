@@ -196,7 +196,7 @@ cn$percN:mean_tough$Position  1   43.30   43.30  0.8562 0.368542
 Residuals                    16  809.15   50.57     
 
 ~~~~
-     plot(cn$percC[mean_tough$Position == "Top"], mean_tough$mean.tough[mean_tough$Position == "Top"], ylim = c(0, 60), xlim = c(0, 60), ylab = "Toughness (g regured to puncture leaf)", xlab = "Percent C or N")
+     plot(cn$percC[mean_tough$Position == "Top"], mean_tough$mean.tough[mean_tough$Position == "Top"], ylim = c(0, 60), xlim = c(0, 60), ylab = "Toughness (g requred to puncture leaf)", xlab = "Percent C or N")
      points(cn$percC[mean_tough$Position == "Sed"], mean_tough$mean.tough[mean_tough$Position == "Sed"], pch = 19)
      points(cn$percN[mean_tough$Position == "Top"], mean_tough$mean.tough[mean_tough$Position == "Top"], pch = 2)
      points(cn$percN[mean_tough$Position == "Sed"], mean_tough$mean.tough[mean_tough$Position == "Sed"], pch = 17)
