@@ -7,6 +7,8 @@
 * Modified:
     * 30 Jan 2018 - KF - summarized the leaf disc mass
     * 2 Feb 2018 - KF - consolodated all of the mass loss analysis here - including AFDM, C and N
+    * 15 Feb 2018 - KF - added summary data for initial OM mass
+    * 15 Feb 2018 - KF - corrected calculations of C mass and N mass based on the actual values from the data, rather than calculated from % C and N
 
 ### Description
 
@@ -25,17 +27,18 @@ Details on the experimental set-up and execution can be found: [https://github.c
 
 ### Determine Average inital leaf mass
 
-The initial leaf mass samples consisted of 10 leaves
+The initial leaf mass came from 9 replicate samples of 10 leaf discs
 
     init.leaf.mass <- leaf.initial$om.mass[leaf.initial$sample == "leaf"]
     sing.init.leaf.mass <- init.leaf.mass / leaf.initial$leaf.num[leaf.initial$sample == "leaf"]
     mean.init.mass <- mean(sing.init.leaf.mass)
-
+    summary(sing.init.leaf.mass * 1000) # converted to mg
+    sd(sing.init.leaf.mass * 1000) # converted to mg
 ~~~~
-# mean mass of a single leaf prior to the beginning the exp (g)
+# summary of AFDM of a single leaf prior to the beginning the exp (mg)
   
-> mean.init.mass
-[1] 0.003541111
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max.     SD 
+  2.850   3.330   3.550   3.541   3.680   4.220  0.4188808
 
 ~~~~
 
@@ -206,34 +209,30 @@ sample estimates:
 0.0002366667 
 ~~~~
 
-### Determine the C mass of the leaves
+### Add Position to the CN data
  
-
-The C mass of the leaf discs at the end of the experiment is estimated by the % C of the leaves after to incubation and the mass of the leaves after incubation
-
 To complete this calculation, I need a treatment level variable for the cn data.frame
 
      cn.position <- c(rep("top", 10), rep("sed", 10))
 
-I now calculate mass of C for each treatment level:
+Each sample for CN contained 3 leaf discs so I now calculate mass of C for a single leaf based on the number of leaf discs in the samples.  
 
-    disc_C_mass_final_TOP <- leaf.final$AFDM[leaf.final$Position == "Top"] * ((cn$percC[cn.position == "top"]) / 100) # convert to proportion
-    disc_C_mass_final_SED <- leaf.final$AFDM[leaf.final$Position == "Sed"] * ((cn$percC[cn.position == "sed"]) / 100)
-    disc_C_mass_final <- c(disc_C_mass_final_TOP, disc_C_mass_final_SED) * 1000 # convert to mg
+    massC_single_disc <- cn$massC / 3
 
-    tapply(disc_C_mass_final, leaf.final$Position, summary) 
-    tapply(disc_C_mass_final, leaf.final$Position, sd)
+    tapply(massC_single_disc, cn.position, summary) 
+    tapply(massC_single_disc, cn.position, sd)
 
 ~~~~
 # Mass of C in each leaf disc after incubation (mg)
  
-$Sed
+$sed
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD 
- 0.6588  0.7806  0.9189  0.8985  0.9689  1.2340 0.1598875 
+ 0.8615  0.9899  1.0230  1.0240  1.0710  1.1620 0.08492448 
 
-$Top
+$top
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD
- 0.8886  1.0500  1.1470  1.2030  1.3910  1.5570 0.2301806 
+  1.210   1.234   1.255   1.250   1.260   1.284 0.02350887 
+
 
 ~~~~
  
@@ -278,7 +277,7 @@ by converting the mean percent C into a proportion
  
 #### Change in C Mass During Incubation
  
-    delta_C_mass <- mean(disc_C_mass_init) - disc_C_mass_final
+    delta_C_mass <- mean(disc_C_mass_init) - massC_single_disc
 
     tapply(delta_C_mass, leaf.final$Position, summary)
     tapply(delta_C_mass, leaf.final$Position, sd)
@@ -287,12 +286,12 @@ by converting the mean percent C into a proportion
 # Change in the mass of C in a leaf disc (mg)
  
 $Sed
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
- 0.3643  0.6294  0.6794  0.6998  0.8176  0.9395  0.1598875 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD 
+ 0.4365  0.5271  0.5752  0.5742  0.6084  0.7368  0.08492448 
 
 $Top
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
-0.04139 0.20780 0.45140 0.39530 0.54850 0.70970  0.2301806 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD
+ 0.3139  0.3384  0.3436  0.3488  0.3647  0.3885 0.02350887 
 
 ~~~~~
  
@@ -305,13 +304,14 @@ $Top
 Welch Two Sample t-test
 
 data:  delta_C_mass by leaf.final$Position
-t = 3.4351, df = 16.045, p-value = 0.003387
+t = 8.0902, df = 10.371, p-value = 8.509e-06
 alternative hypothesis: true difference in means is not equal to 0
 95 percent confidence interval:
- 0.1166032 0.4922788
+ 0.1636497 0.2872260
 sample estimates:
 mean in group Sed mean in group Top 
-        0.6997685         0.3953275 
+        0.5741936         0.3487558
+
 ~~~~
 
  
@@ -327,9 +327,12 @@ mean in group Sed mean in group Top
 
 Figure: Change in final leaf C mass
 
+Create an AFDM value in mg
+    AFDM.mg <- leaf.final$AFDM * 1000
+    
     par(las = 1)
-    plot((leaf.final$AFDM[leaf.final$Position == "Sed"] * 1000), (disc_C_mass_final_SED * 1000) , ylim = c(0, 2), xlim = c(0, 4), ylab = "C Mass (mg)", xlab = "AFDM (mg)", pch = 1)
-    points((leaf.final$AFDM[leaf.final$Position == "Top"] * 1000), (disc_C_mass_final_TOP * 1000), pch = 19)
+    plot(massC_single_disc ~ AFDM.mg , data = leaf.final, subset = Position == "Sed", ylim = c(0, 2), xlim = c(0, 4), ylab = "C Mass (mg)", xlab = "AFDM (mg)", pch = 1)
+    points(massC_single_disc ~ AFDM.mg , data = leaf.final, subset = Position == "Top", pch = 19)
     legend(0, 2, c("Sediment Contact", "No Sediment Contact"), pch = c(1, 19))
     dev.copy(jpeg, "./output/plots/C_mass_by_AFDM.jpg")
     dev.off()
