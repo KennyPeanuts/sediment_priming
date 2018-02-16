@@ -426,4 +426,16 @@ mean in group Sed mean in group Top
 
 
 ![Delta N mass ](../output/plots/delta_n_mass.jpg)
- 
+
+
+    par(las = 1)
+    plot(massN_single_disc ~ AFDM.mg , data = leaf.final, subset = Position == "Sed", ylim = c(0, 0.05), xlim = c(0, 4), ylab = "N Mass (mg)", xlab = "AFDM (mg)", pch = 1)
+    points(massN_single_disc ~ AFDM.mg , data = leaf.final, subset = Position == "Top", pch = 19)
+    legend(0, 2, c("Sediment Contact", "No Sediment Contact"), pch = c(1, 19))
+    dev.copy(jpeg, "./output/plots/N_mass_by_AFDM.jpg")
+    dev.off()
+
+
+![N mass by AFDM ](../output/plots/N_mass_by_AFDM.jpg)
+
+N Mass by AFDM
