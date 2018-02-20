@@ -7,6 +7,7 @@
 * Modified:
     * 30 Jan 2018 - KF - summarized the leaf disc mass
     * 2 Feb 2018 - KF - consolodated all of the mass loss analysis here - including AFDM, C and N
+    * 20 Feb 2018 - KF - NOTE I recalculated the mass loss for C and N using the masses from the data but then realized that these were just molar masses calculated with a constant rather than from the sample masses so they provided no information beyond that of the percents.  I reverted those calculations back to this version which has the C and N mass calculated as the propC or N multipled by the AFDM.
 
 ### Description
 
