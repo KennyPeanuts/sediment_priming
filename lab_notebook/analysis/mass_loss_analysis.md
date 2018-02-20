@@ -344,23 +344,26 @@ Figure: C mass plotted against AFDM for the leaf discs
 
 ### Determination of the change in N mass in the leaves 
 
-This is done the same way as was done with C above.
+This is done the same way as was donw with C above.
 
-    massN_single_disc <- cn$massN / 3
+    disc_N_mass_final_TOP <- leaf.final$AFDM[leaf.final$Position == "Top"] * ((cn$percN[cn.position == "top"]) / 100) # convert to proportion
+    disc_N_mass_final_SED <- leaf.final$AFDM[leaf.final$Position == "Sed"] * ((cn$percN[cn.position == "sed"]) / 100)
+    disc_N_mass_final <- c(disc_N_mass_final_TOP, disc_N_mass_final_SED) * 1000 # convert to mg
 
-    tapply(massN_single_disc, cn.position, summary) 
-    tapply(massN_single_disc, cn.position, sd)
+    tapply(disc_N_mass_final, leaf.final$Position, summary) 
+    tapply(disc_N_mass_final, leaf.final$Position, sd)
 
 ~~~~
 # Estimated N mass of a single leaf disc (mg)
  
-$sed
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD 
-0.03094 0.03558 0.03831 0.03765 0.03903 0.04522 0.003762481 
-
-$top
+$Sed
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD
-0.03046 0.03403 0.03760 0.03727 0.04040 0.04522 0.004767817 
+0.02813 0.03315 0.04009 0.03848 0.04168 0.05150 0.006818064 
+
+$Top
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD
+0.02496 0.03467 0.03793 0.04256 0.05270 0.06726 0.013079830 
+
 ~~~~
  
 ##### Initial N mass of a single leaf 
@@ -380,7 +383,7 @@ $top
  
 #### Change in N mass following incuabation 
  
-    delta_N_mass <- mean(disc_N_mass_init) - massN_single_disc 
+    delta_N_mass <- mean(disc_N_mass_init) - disc_N_mass_final
 
     tapply(delta_N_mass, leaf.final$Position, summary)
     tapply(delta_N_mass, leaf.final$Position, sd)
@@ -389,12 +392,13 @@ $top
 # Loss of N mass from a single leaf disc during the incubation (mg)
 
 $Sed
-      Min.    1st Qu.     Median       Mean    3rd Qu.       Max. SD  
--0.0103400 -0.0041490 -0.0034350 -0.0027690 -0.0006983  0.0039420 0.003762481 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. SD
+-0.016620 -0.006802 -0.005206 -0.003605  0.001731  0.006750 0.006818064 
 
 $Top
       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. SD
--0.0103400 -0.0055170 -0.0027210 -0.0023880  0.0008486  0.0044180 0.004767817 
+-0.0323800 -0.0178200 -0.0030520 -0.0076760  0.0002059  0.0099200 0.013079830
+
 ~~~~
 
 ##### Test of N Mass Loss
@@ -406,19 +410,20 @@ $Top
 Welch Two Sample t-test
 
 data:  delta_N_mass by leaf.final$Position
-t = -0.1983, df = 17.077, p-value = 0.8452
+t = 0.8729, df = 13.555, p-value = 0.3979
 alternative hypothesis: true difference in means is not equal to 0
 95 percent confidence interval:
- -0.004431561  0.003670021
+ -0.005963507  0.014106707
 sample estimates:
 mean in group Sed mean in group Top 
-     -0.002768705      -0.002387934 
+     -0.003604656      -0.007676256 
+
 ~~~~
  
 ##### Plot of N Mass Loss 
  
     par(las = 1)
-    plot(delta_N_mass ~ leaf.final$Position, ylim = c(-0.02, 0.01), ylab = "N Mass Loss (mg)", xlab = "Position", col = "grey")
+    plot(delta_N_mass ~ leaf.final$Position, ylim = c(-0.04, 0.01), ylab = "N Mass Loss (mg)", xlab = "Position", col = "grey")
     text(1, mean(delta_N_mass[leaf.final$Position == "Sed"]), "*", cex = 2)
     text(2, mean(delta_N_mass[leaf.final$Position == "Top"]), "*", cex = 2)
     dev.copy(jpeg, "./output/plots/delta_n_mass.jpg")
