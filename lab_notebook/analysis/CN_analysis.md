@@ -6,6 +6,9 @@
 
 * Modified: 
 
+  * 22 Feb 2018 - KF - added test of the change in percent C and N
+  
+  
 ### Description
 
 These analyses are to evaluate the CN of the leaves in the sediment priming experiment. Details on the experimental set-up and execution can be found: [https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/lab_notes/Notes_on_set_up.md](https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/lab_notes/Notes_on_set_up.md) & [https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/lab_notes/Notes_on_breakdown.md](https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/lab_notes/Notes_on_breakdown.md)
@@ -218,3 +221,132 @@ Residuals 18  90.73    5.04
     dev.off()
 
 ![Percent C by leaf Position](../output/plots/percC_and_N_by_position.jpg)
+
+# Calculation of the Change in Percent C and N
+
+## Initial Percent C and N
+
+The initial percent C and N comes from the analyses from the leached litter experiment.  The details can be found in the mass loss analysis script [https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/analysis/mass_loss_analysis.md#determine-the-average-initial-percent-c-and-percent-n](https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/analysis/mass_loss_analysis.md#determine-the-average-initial-percent-c-and-percent-n)
+ 
+    mean_initial_percC <- 45.13
+    mean_initial_percN <- 0.9850
+
+## Calculate the Change in Percent C
+ 
+    delta_percC <- mean_initial_percC - leaf$percC
+
+### Summary of Change in Percent C
+ 
+    tapply(delta_percC, leaf$pos, summary)
+    tapply(delta_percC, leaf$pos, sd)
+
+~~~~
+# The change in percent C of the leaves following the incubation 
+  
+$sed
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
+  3.270   6.533   8.265   8.230   9.463  14.090  3.060007 
+
+$top
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD
+-1.1500 -0.2675 -0.0800  0.1070  0.6800  1.5400 0.847074 
+ 
+~~~~
+
+### Test for the change in Percent C
+  
+    t.test(delta_percC ~ pos, data = leaf)
+
+~~~~
+# Results of the the t - test of the difference in change in percent C with position
+  
+
+ Welch Two Sample t-test
+
+data:  delta_percC by pos
+t = 8.0902, df = 10.371, p-value = 8.509e-06
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+  5.896644 10.349356
+sample estimates:
+mean in group sed mean in group top 
+            8.230             0.107 
+ 
+~~~~
+  
+Due to some non-homogeneity of variance I also performed a non-parametric test
+ 
+    kruskal.test(delta_percC ~ pos, data = leaf)
+ 
+~~~~
+Kruskal-Wallis rank sum test
+
+data:  delta_percC by pos
+Kruskal-Wallis chi-squared = 14.2857, df = 1, p-value = 0.0001571
+
+
+~~~~
+
+## Calculate the Change in Percent N
+ 
+    delta_percN <- mean_initial_percN - leaf$percN
+
+### Summary of Change in Percent N
+ 
+    tapply(delta_percN, leaf$pos, summary)
+    tapply(delta_percN, leaf$pos, sd)
+
+~~~~
+# The change in percent N of the leaves following the incubation 
+
+$sed
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD
+ -0.915  -0.655  -0.625  -0.597  -0.510  -0.315 0.1580998 
+
+$top
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD
+-0.9150 -0.7125 -0.5950 -0.5810 -0.4450 -0.2950 0.2003441 
+
+~~~~
+
+### Test for the change in Percent N
+  
+    t.test(delta_percN ~ pos, data = leaf)
+
+~~~~
+# Results of the the t - test of the difference in change in percent C with position
+  
+ Welch Two Sample t-test
+
+data:  delta_percN by pos
+t = -0.1983, df = 17.077, p-value = 0.8452
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -0.1862146  0.1542146
+sample estimates:
+mean in group sed mean in group top 
+           -0.597            -0.581 
+
+~~~~
+  
+### Plot of Change in Percent C
+  
+    par(las = 1, mfcol = c(2, 1), mar = c(0.2, 8, 2.5, 8))
+    plot(delta_percC ~ pos, data = leaf, ylim = c(-1.5, 20), ylab = "Change in Percent C", xlab = " ", col = "gray", axes = F)
+    text(1, mean(delta_percC[leaf$pos == "sed"]), "*", cex = 2)
+    text(2, mean(delta_percC[leaf$pos == "top"]), "*", cex = 2)
+    axis(2)
+    abline(h = 0)
+    box()
+    par(mar = c(2.5, 8, 0.2, 8))
+    plot(delta_percN ~ pos, data = leaf, ylim = c(-1, 1), ylab = "Change in Percent N", xlab = " ", col = "gray", axes = F)
+    text(1, mean(delta_percN[leaf$pos == "sed"]), "*", cex = 2)
+    text(2, mean(delta_percN[leaf$pos == "top"]), "*", cex = 2)
+    axis(2, cex.lab = 1.5)
+    axis(1, c("Sediment Contact", "No Sed. Contact"), at = c(1, 2), cex.lab = 1.5)
+    abline(h = 0)
+    box()
+    dev.copy(jpeg, "./output/plots/delta_percC_and_N_by_position.jpg")
+    dev.off()
+
+![Change in Percent C and N by leaf Position](../output/plots/delta_percC_and_N_by_position.jpg)
