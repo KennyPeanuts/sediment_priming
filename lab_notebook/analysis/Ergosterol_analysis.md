@@ -183,61 +183,12 @@ $Top
 0.02987 0.05221 0.06666 0.06892 0.07531 0.13110   0.02810344 
 
 ~~~~
+# Percentage of Final Leaf C Mass in the Fungi
 
-#### Leaf Disc C Mass Final
- 
-The estimated AFDM of a single leaf at the end of the incubataion is "AFDM" in the "erg" data frame.     
+To calculate the percent of the final C mass of the leaf that is in fungi, I need the final C mass of the leaves from the mass analysis.
 
-    tapply(erg$AFDM * 1000, erg$Position, summary)
-    tapply(erg$AFDM * 1000, erg$Position, sd)
-
-~~~~
-# Estimated dry mass of a single leaf disc after incubation (mg)
- 
-$Sed
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD 
-  1.940   2.155   2.490   2.440   2.515   3.480  0.4320494 
-$Top
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
-  1.920   2.315   2.580   2.677   3.125   3.540  0.5362904 
-
-~~~~
-
-
-
-
-## Test of Change in C mass of a leaf Disc during incbation by position
-
-    t.test(delta_C_mass ~ erg$Position)
- 
-~~~~
-Welch Two Sample t-test
-
-data:  delta_C_mass by erg$Position
-t = 3.4351, df = 16.045, p-value = 0.003387
-alternative hypothesis: true difference in means is not equal to 0
-95 percent confidence interval:
- 0.1166032 0.4922788
-sample estimates:
-mean in group Sed mean in group Top 
-         0.694988          0.390547 
-
-~~~~
-
- 
-    par(las = 1)
-    plot(delta_C_mass ~ erg$Position, ylim = c(0, 1))
-    text(1, mean(delta_C_mass[erg$Position == "Sed"]), "*", cex = 2)
-    text(2, mean(delta_C_mass[erg$Position == "Top"]), "*", cex = 2)
-    dev.copy(jpeg, "./output/plots/delta_c_mass.jpg")
-    dev.off()
-
-
-![Delta C mass in fungal C mass](../output/plots/delta_c_mass.jpg)
-
-Figure: Change in final leaf C mass
-
-#### Percentage of Final Leaf C Mass in the Fungi
+To complete the remaining calculations, you need to run the code in the mass_loss_analysis.R [https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/analysis/mass_loss_analysis.md#determine-the-c-mass-of-the-leaves](https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/analysis/mass_loss_analysis.md#determine-the-c-mass-of-the-leaves) so that you get the 'disc_C_mass_final' object.
+                                                                                              
 
 The percent of the final leaf C mass that is in fungi:
  
@@ -280,7 +231,7 @@ mean in group Sed mean in group Top
 ~~~~
  
     par(las = 1)
-    plot(perc_fungal_C ~ erg$Position, ylim = c(0, 10), ylab = "Percent of Final Leaf C Mass in Fungal C", xlab = "Position")
+    plot(perc_fungal_C ~ erg$Position, ylim = c(0, 10), ylab = "Percent of Final Leaf C Mass in Fungal C", xlab = "Position", col = 8)
     text(1, mean(perc_fungal_C[erg$Position == "Sed"]), "*", cex = 2)
     text(2, mean(perc_fungal_C[erg$Position == "Top"]), "*", cex = 2)
     dev.copy(jpeg, "./output/plots/percent_fungal_c_mass.jpg")
