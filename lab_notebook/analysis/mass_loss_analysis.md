@@ -61,6 +61,7 @@ Briefly, each of the initial samples contained 20, 10 mm leaf discs that were cu
     sd(initial_cn$percC)
     sd(initial_cn$percN)
     sd(initial_cn$CN)
+    length(initial_cn)
 
 ~~~~
 
@@ -72,6 +73,7 @@ rep       percC           percN              CN
        3rd Qu.:45.47   3rd Qu.:1.0075   3rd Qu.:54.95  
        Max.   :45.80   Max.   :1.0300   Max.   :56.47  
        SD: 0.940452    SD: 0.06363961   SD: 4.298354
+       N   4           N  4             N   4
 
 ~~~~
 ### Determine Average Final AFDM
@@ -88,17 +90,18 @@ Since there were different numbers of leaves in the crucibles `final.AFDM` is th
 
     tapply(final.leaf.AFDM * 1000, leaf.final$Position, summary)
     tapply(final.leaf.AFDM * 1000, leaf.final$Position, sd)
+    tapply(final.leaf.AFDM * 1000, leaf.final$Position, length)
 
 ~~~~
 # Summary of the average mass of a single leaf disc at the end of the exp, by position (mg)
  
 $Sed
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
-  1.940   2.155   2.490   2.440   2.515   3.480  0.4320494 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD         N
+  1.940   2.155   2.490   2.440   2.515   3.480  0.4320494  10
 
 $Top
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
-  1.920   2.315   2.580   2.677   3.125   3.540  0.5362904 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD         N
+  1.920   2.315   2.580   2.677   3.125   3.540  0.5362904  10
 
 
 ~~~~
@@ -110,17 +113,18 @@ $Top
 
     tapply(AFDM.loss * 1000, leaf.final$Position, summary) 
     tapply(AFDM.loss * 1000, leaf.final$Position, sd)
+    tapply(AFDM.loss * 1000, leaf.final$Position, length)
  
 ~~~~
 AFDM Loss from each postion (mg)
 
 $Sed
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
-0.06111 1.02600 1.05100 1.10100 1.38600 1.60100  0.4320494
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD        N
+0.06111 1.02600 1.05100 1.10100 1.38600 1.60100  0.4320494 10
 
 $Top
-    Min.  1st Qu.   Median     Mean  3rd Qu.     Max.  SD
-0.001111 0.416100 0.961100 0.864400 1.226000 1.621000  0.5362904
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max.  SD        N
+0.001111 0.416100 0.961100 0.864400 1.226000 1.621000  0.5362904 10
 ~~~~
  
 ### Compare mass loss by position
@@ -224,17 +228,18 @@ I now calculate mass of C for each treatment level:
 
     tapply(disc_C_mass_final, leaf.final$Position, summary) 
     tapply(disc_C_mass_final, leaf.final$Position, sd)
+    tapply(disc_C_mass_final, leaf.final$Position, length)
 
 ~~~~
 # Mass of C in each leaf disc after incubation (mg)
  
 $Sed
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD 
- 0.6588  0.7806  0.9189  0.8985  0.9689  1.2340 0.1598875 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD         N
+ 0.6588  0.7806  0.9189  0.8985  0.9689  1.2340 0.1598875  10
 
 $Top
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD
- 0.8886  1.0500  1.1470  1.2030  1.3910  1.5570 0.2301806 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD         N
+ 0.8886  1.0500  1.1470  1.2030  1.3910  1.5570 0.2301806  10
 
 ~~~~
  
@@ -252,12 +257,13 @@ The initial leaf disc masses are calculated by dividing the total sample AFDM ma
 
     summary(disc_C_mass_init)
     sd(disc_C_mass_init)
+    length(disc_C_mass_init)
 
 ~~~~
 # Estimated carbon mass of a single leaf disc prior to incubation (mg)
  
-Min. 1st Qu.  Median    Mean 3rd Qu.    Max.     SD
-  1.283   1.499   1.597   1.594   1.656   1.899  0.1884964
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max.     SD         N
+  1.283   1.499   1.597   1.594   1.656   1.899  0.1884964  9
 ~~~~
     disc_mass_init <- (init_om$om.mass[init_om$sample == "leaf"] / init_om$leaf.num[init_om$sample == "leaf"]) * 1000 # converted to mg 
 
@@ -268,12 +274,13 @@ by converting the mean percent C into a proportion
 
     summary(disc_C_mass_init)
     sd(disc_C_mass_init)
+    length(disc_C_mass_init)
 
 ~~~~
 # Estimated carbon mass of a single leaf disc prior to incubation (mg)
 
- Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    SD
-  1.286   1.503   1.602   1.598   1.661   1.905  0.1890618
+ Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    SD        N
+  1.286   1.503   1.602   1.598   1.661   1.905  0.1890618 9
  
 ~~~~
  
@@ -283,17 +290,18 @@ by converting the mean percent C into a proportion
 
     tapply(delta_C_mass, leaf.final$Position, summary)
     tapply(delta_C_mass, leaf.final$Position, sd)
+    tapply(delta_C_mass, leaf.final$Position, length)
 
 ~~~~
 # Change in the mass of C in a leaf disc (mg)
  
 $Sed
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
- 0.3643  0.6294  0.6794  0.6998  0.8176  0.9395  0.1598875 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD         N
+ 0.3643  0.6294  0.6794  0.6998  0.8176  0.9395  0.1598875  10
 
 $Top
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
-0.04139 0.20780 0.45140 0.39530 0.54850 0.70970  0.2301806 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD         N
+0.04139 0.20780 0.45140 0.39530 0.54850 0.70970  0.2301806  10
 
 ~~~~~
  
@@ -342,7 +350,7 @@ Figure: C mass plotted against AFDM for the leaf discs
 
 ### Determination of the change in N mass in the leaves 
 
-This is done the same way as was donw with C above.
+This is done the same way as was done with C above.
 
     disc_N_mass_final_TOP <- leaf.final$AFDM[leaf.final$Position == "Top"] * ((cn$percN[cn.position == "top"]) / 100) # convert to proportion
     disc_N_mass_final_SED <- leaf.final$AFDM[leaf.final$Position == "Sed"] * ((cn$percN[cn.position == "sed"]) / 100)
@@ -350,17 +358,18 @@ This is done the same way as was donw with C above.
 
     tapply(disc_N_mass_final, leaf.final$Position, summary) 
     tapply(disc_N_mass_final, leaf.final$Position, sd)
+    tapply(disc_N_mass_final, leaf.final$Position, length)
 
 ~~~~
 # Estimated N mass of a single leaf disc (mg)
  
 $Sed
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD
-0.02813 0.03315 0.04009 0.03848 0.04168 0.05150 0.006818064 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD            N
+0.02813 0.03315 0.04009 0.03848 0.04168 0.05150 0.006818064   10
 
 $Top
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD
-0.02496 0.03467 0.03793 0.04256 0.05270 0.06726 0.013079830 
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD           N
+0.02496 0.03467 0.03793 0.04256 0.05270 0.06726 0.013079830  10
 
 ~~~~
  
@@ -370,12 +379,13 @@ $Top
 
     summary(disc_N_mass_init)
     sd(disc_N_mass_init)
+    length(disc_N_mass_init)
 
 ~~~~
 # Initial N mass of a single leaf disc prior to incubation (mg)
  
- Min. 1st Qu.  Median    Mean 3rd Qu.    Max.   SD
-0.02807 0.03280 0.03497 0.03488 0.03625 0.04157 0.004125976
+ Min. 1st Qu.  Median    Mean 3rd Qu.    Max.   SD           N
+0.02807 0.03280 0.03497 0.03488 0.03625 0.04157 0.004125976  9
 
 ~~~~
  
@@ -385,17 +395,18 @@ $Top
 
     tapply(delta_N_mass, leaf.final$Position, summary)
     tapply(delta_N_mass, leaf.final$Position, sd)
+    tapply(delta_N_mass, leaf.final$Position, length)
 
 ~~~~
 # Loss of N mass from a single leaf disc during the incubation (mg)
 
 $Sed
-     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. SD
--0.016620 -0.006802 -0.005206 -0.003605  0.001731  0.006750 0.006818064 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. SD           N
+-0.016620 -0.006802 -0.005206 -0.003605  0.001731  0.006750 0.006818064  10
 
 $Top
-      Min.    1st Qu.     Median       Mean    3rd Qu.       Max. SD
--0.0323800 -0.0178200 -0.0030520 -0.0076760  0.0002059  0.0099200 0.013079830
+      Min.    1st Qu.     Median       Mean    3rd Qu.       Max. SD           N
+-0.0323800 -0.0178200 -0.0030520 -0.0076760  0.0002059  0.0099200 0.013079830  10
 
 ~~~~
 
