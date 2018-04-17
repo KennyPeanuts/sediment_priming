@@ -61,7 +61,7 @@ Briefly, each of the initial samples contained 20, 10 mm leaf discs that were cu
     sd(initial_cn$percC)
     sd(initial_cn$percN)
     sd(initial_cn$CN)
-    length(initial_cn)
+    length(initial_cn$CN) #just chose a variable but all the lengths are the same
 
 ~~~~
 
@@ -73,7 +73,7 @@ rep       percC           percN              CN
        3rd Qu.:45.47   3rd Qu.:1.0075   3rd Qu.:54.95  
        Max.   :45.80   Max.   :1.0300   Max.   :56.47  
        SD: 0.940452    SD: 0.06363961   SD: 4.298354
-       N   4           N  4             N   4
+       N   2           N  2             N   2
 
 ~~~~
 ### Determine Average Final AFDM
