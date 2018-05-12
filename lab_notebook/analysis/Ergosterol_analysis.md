@@ -73,10 +73,12 @@ $Top
  
 ## Analysis of the Effect of Position on Mass Normalized Ergosterol
 
-    par(las = 1)
-    plot(Erg_mass_norm ~ Position, data = erg, ylim = c(0, 550), ylab = "Ergosterol (ug/g AFDM)", xlab = "Leaf Position", col = "lightsalmon", axes = F)
+    par(las = 1, cex = 1.2, mar = c(4, 5, 4, 5))
+    plot(Erg_mass_norm ~ Position, data = erg, ylim = c(0, 550), ylab = "Ergosterol (ug/g AFDM)", xlab = "", col = 8, axes = F)
     axis(2)
     axis(1, c("Sediment Contact", "No Sediment Contact"), at = c(1, 2))
+    text(1, mean(erg$Erg_mass_norm[erg$Position == "Sed"]), "*", cex = 2)
+    text(2, mean(erg$Erg_mass_norm[erg$Position == "Top"]), "*", cex = 2)
     box()
     dev.copy(jpeg, "./output/plots/erg_mass_norm_by_position.jpg")
     dev.off()
@@ -231,9 +233,12 @@ mean in group Sed mean in group Top
 ~~~~
  
     par(las = 1)
-    plot(perc_fungal_C ~ erg$Position, ylim = c(0, 10), ylab = "Percent of Final Leaf C Mass in Fungal C", xlab = "Position", col = 8)
+    plot(perc_fungal_C ~ erg$Position, ylim = c(0, 10), ylab = "Percent of Final Leaf C Mass in Fungal C", xlab = "", col = 8, axes = F)
+    axis(2)
+    axis(1, c("Sediment Contact", "No Sediment Contact"), at = c(1, 2))
     text(1, mean(perc_fungal_C[erg$Position == "Sed"]), "*", cex = 2)
     text(2, mean(perc_fungal_C[erg$Position == "Top"]), "*", cex = 2)
+    box()
     dev.copy(jpeg, "./output/plots/percent_fungal_c_mass.jpg")
     dev.off()
 
