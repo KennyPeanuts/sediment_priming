@@ -129,7 +129,7 @@ $Top
  
 ### Compare mass loss by position
 
-    par(las = 1)
+    par(las = 1, mar = c(4, 5, 4, 5), cex = 1.2)
     plot(AFDM.loss * 1000 ~ Position, data = leaf.final, ylim = c(0, 2), xlim = c(.50, 2.5), axes = F, xlab = " ", ylab = "Mass Loss (mg AFDM)", col = "gray")
     text(1, mean(AFDM.loss[leaf.final$Position == "Sed"] * 1000), "*", cex = 2)
     text(2, mean(AFDM.loss[leaf.final$Position == "Top"] * 1000), "*", cex = 2)
@@ -139,7 +139,7 @@ $Top
     dev.copy(jpeg, "./output/plots/mass_loss.jpg")
     dev.off()
 
-![Mass lost from leaves in the sediments or water column](../output/plots/mass_loss.jpg)
+[Mass lost from leaves in the sediments or water column](../output/plots/mass_loss.jpg)
 
 Mass lost from leaves in the sediments or water column
 

@@ -82,7 +82,7 @@ mean of x mean of y
 ### Plots
  
     par(las = 1, cex = 1.2, mar = c(4, 5, 4, 5))
-    boxplot(mean.tough.sed, mean.tough.top, ylim = c(0, 60), ylab = "Mean Mass Required to Puncture the Leaf (g)", xlab = " ", col = 8 )
+    boxplot(mean.tough.sed, mean.tough.top, ylim = c(0, 60), ylab = "Toughness (Grams Required to Puncture the Leaf)", xlab = " ", col = 8 )
     text(1, mean(mean.tough.sed), "*", cex = 2)
     text(2, mean(mean.tough.top), "*", cex = 2)
     axis(1, c("Sediment Contact", "No Sed. Contact"), at = c(1, 2))
