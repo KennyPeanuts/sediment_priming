@@ -9,7 +9,6 @@
  * 1 Nov 2017 - KF - calculated the degree that fungal C mass was from converted leaf C
  * 25 Jan 2018 - KF - tested differences in the percent fungal carbon in the leaves
  * 30 Jan 2018 - KF - recalculated the carbon mass, and percent of fungal C to leaf C based on AFDM rather than leaf dry mass - this better matches with the mass loss analysis
-<<<<<<< HEAD
  * 20 June 2018 - KF - added analysis on the amount of N mass in the Fungi at the end of the experiment
  
 ### Description
@@ -321,6 +320,85 @@ The percent of the final leaf N mass that is in fungi:
     dev.copy(jpeg, "./output/plots/percent_fungal_N_mass.jpg")
     dev.off()
 
-![Percent of final leaf C mass in fungal N mass](../output/plots/percent_fungal_N_mass.jpg)
+![Percent of final leaf N mass in fungal N mass](../output/plots/percent_fungal_N_mass.jpg)
 
-Figure: Percent of the the final leaf C mass in fungal C mass
+Figure: Percent of the the final leaf N mass in fungal N mass
+
+## Calculation of the amount of N in the Fungi relative to the amount required to lower the C:N 
+
+The results show that the mass of C goes down in the leaves during the incubation but that the mass of N does not go down. This suggests that the microbial community is immobilizing the N that is liberated during decomposition. 
+
+I calculated whether the mass of N contained in the fungal biomass at the end of the experiment would be sufficient to account for the retained N mass.
+
+### Calculate the mass-based C:N
+
+    CN_mass_init <- mean(disc_C_mass_init) / mean(disc_N_mass_init)
+    
+Mean mass-based CN of a leaf disc at the beginning of the experiment
+    [1] 45.82234
+
+### Calculate the N mass expected if there was no immobilization of N
+#### Sediment Treatment
+
+    expected_N_mass_final_SED <- (disc_C_mass_final_SED / CN_mass_init) * 1000 # convert to mg
+    summary(expected_N_mass_final_SED)
+    sd(expected_N_mass_final_SED)
+    
+~~~~
+# The mass of N expected in the leaves based on the CN assuming that no N was immobilized (mg) 
+#### Sediment Treatment
+      Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
+    0.01438 0.01704 0.02005 0.01961 0.02114 0.02693 0.003489293
+    
+~~~~
+  
+    
+#### No-Sediment Treatment
+
+    expected_N_mass_final_TOP <- (disc_C_mass_final_TOP / CN_mass_init) * 1000 # convert to mg
+    summary(expected_N_mass_final_TOP)
+    sd(expected_N_mass_final_TOP)
+    
+~~~~
+# The mass of N expected in the leaves based on the CN assuming that no N was immobilized (mg) 
+## No-Sediment Treatmen
+      Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
+    0.01939 0.02291 0.02503 0.02625 0.03035 0.03398 0.005023328
+~~~~
+      
+### Calculate the amount of N mass lost from the leaves if we assume that N loss was proportional to initial stoichiometry
+      
+The mass loss analysis shows that the leaves did lose some N mass during the experiment so I correct the intial N mass for the observed N mass loss
+    
+    expected_delta_N_mass_SED <- (mean(disc_N_mass_init) - mean(delta_N_mass[leaf.final$Position == "Sed"])) - mean(expected_N_mass_final_SED)
+    expected_delta_N_mass_TOP <- (mean(disc_N_mass_init) - mean(delta_N_mass[leaf.final$Position == "Top"])) - mean(expected_N_mass_final_TOP)
+
+~~~~
+# The estimated mass of N that would have been lost from a single leaf disc if the microbial community had not immobilized released DIN (mg)
+      
+SED:
+      0.018876
+TOP
+      0.01630365
+~~~~
+        
+## Comparison of the N mass expected to be lost from the leaves w/o immobilization and the amount of N mass in the Fungal biomass
+        
+The difference in the mass of N expected to be lost per leaf to mineralization and the mass of fungi in the leaf is (mg):
+
+### Sediment Treatment       
+    expected_delta_N_mass_SED - mean(fungal_N_mass[erg$Position == "Sed"])
+### No-Sediment Treatment
+    expected_delta_N_mass_TOP - mean(fungal_N_mass[erg$Position == "Top"])
+
+~~~~  
+# The difference in the mass of N expected to be lost per leaf to mineralization and the mass of fungi in the leaf is (mg)
+
+SED:
+    0.01517894
+    
+TOP:
+    0.005885216
+~~~~
+
+   
