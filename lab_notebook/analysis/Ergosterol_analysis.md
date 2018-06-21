@@ -9,8 +9,8 @@
  * 1 Nov 2017 - KF - calculated the degree that fungal C mass was from converted leaf C
  * 25 Jan 2018 - KF - tested differences in the percent fungal carbon in the leaves
  * 30 Jan 2018 - KF - recalculated the carbon mass, and percent of fungal C to leaf C based on AFDM rather than leaf dry mass - this better matches with the mass loss analysis
+<<<<<<< HEAD
  * 20 June 2018 - KF - added analysis on the amount of N mass in the Fungi at the end of the experiment
- * 21 Junw 2018 - KF - calculated if the amount of N mass in the fungi at the end of the experiment is sufficient to accout for the change in C:N during the experiment
  
 ### Description
 
@@ -141,7 +141,7 @@ mean in group Sed mean in group Top
  
 There is 1 mg fungal dry mass / 5 ug of ergosterol mass (Su et al. 2015 - citing Gessner and Newell 2002)
 
-Fungi had 43% C (Findlay et al 2002)
+Fungi had 43% C and 6.5% N (Findlay et al 2002)
 
 We measured the % C of the leached leaf litter used in the exp as 45 % - this comes from measurements taken from the leached litter CPOM flux experiment.
 
@@ -151,10 +151,14 @@ Using these estimates we can estimate the fungal dry mass (mg) on the leaves as:
  
     fungal_mass <- (1 / 5) * erg$Erg_per_leaf # 1 mg fungal mass / 5 ug ergosterl mass
 
-#### Fungal C Mass
+#### Fungal C and N Mass
 The carbon mass (mg) of the fungi on the leaves would be:
  
     fungal_C_mass <- fungal_mass * 0.43
+    
+The nitrogen mass (mg) of the fungi on the leaves would be:
+
+    fungal_N_mass <- fungal_mass * 0.065
 
      tapply(fungal_mass, erg$Position, summary)
      tapply(fungal_mass, erg$Position, sd)
@@ -171,28 +175,45 @@ $Top
 0.06946 0.12140 0.15500 0.16030 0.17510 0.30490  0.06535683
 
 ~~~~
- 
-     tapply(fungal_C_mass, erg$Position, summary)
-     tapply(fungal_C_mass, erg$Position, sd)
+  
+    tapply(fungal_C_mass, erg$Position, summary)
+    tapply(fungal_C_mass, erg$Position, sd)
 
 ~~~~
 # Fungal C Mass per Leaf (mg)
- 
 $Sed
-    Min.  1st Qu.   Median     Mean  3rd Qu.     Max.  SD 
-0.008133 0.015560 0.019940 0.024460 0.032030 0.047980  0.01319371
-
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max.       SD
+    0.008133 0.015562 0.019943 0.024457 0.032027 0.047981   0.01319371
+    
 $Top
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.   SD
-0.02987 0.05221 0.06666 0.06892 0.07531 0.13110   0.02810344 
+    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.            SD
+    0.02987 0.05221 0.06666 0.06892 0.07531 0.13113         0.02810344 
+    
+~~~~
+    
+
+     tapply(fungal_N_mass, erg$Position, summary)
+     tapply(fungal_N_mass, erg$Position, sd)
 
 ~~~~
+# Fungal N Mass per Leaf (mg)
+       $Sed
+     Min.  1st Qu.   Median     Mean  3rd Qu.     Max.      SD
+     0.001229 0.002352 0.003015 0.003697 0.004841 0.007253  0.001994397
+     
+     $Top
+     Min.  1st Qu.   Median     Mean  3rd Qu.     Max.      SD
+     0.004515 0.007892 0.010076 0.010418 0.011384 0.019821  0.004248194
+
+~~~~
+
 # Percentage of Final Leaf C Mass in the Fungi
 
 To calculate the percent of the final C mass of the leaf that is in fungi, I need the final C mass of the leaves from the mass analysis.
 
-To complete the remaining calculations, you need to run the code in the mass_loss_analysis.R [https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/analysis/mass_loss_analysis.md#determine-the-c-mass-of-the-leaves](https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/analysis/mass_loss_analysis.md#determine-the-c-mass-of-the-leaves) so that you get the 'disc_C_mass_final' object.
+To complete the remaining calculations, you need to run the code in the mass_loss_analysis.R [https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/analysis/mass_loss_analysis.md#determine-the-c-mass-of-the-leaves](https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/analysis/mass_loss_analysis.md#determine-the-c-mass-of-the-leaves) so that you get the 'disc_C_mass_final' and the 'disc_N_mass_final' object.
                                                                                               
+## Percent of Final C mass of the leaf that is in fungi
 
 The percent of the final leaf C mass that is in fungi:
  
@@ -245,5 +266,61 @@ mean in group Sed mean in group Top
     dev.off()
 
 ![Percent of final leaf C mass in fungal C mass](../output/plots/percent_fungal_c_mass.jpg)
+
+Figure: Percent of the the final leaf C mass in fungal C mass
+
+## Percent of the final leaf N mass that is in Fungi
+
+The percent of the final leaf N mass that is in fungi:
+ 
+    perc_fungal_N <- (fungal_N_mass / disc_N_mass_final) * 100 
+
+    tapply(perc_fungal_N, erg$Position, summary)
+    tapply(perc_fungal_N, erg$Position, sd)
+    
+~~~~
+# Percent of the final C mass of each leaf disc that is in fungal C
+
+    $Sed
+    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.   SD
+    3.913   5.539   7.316  10.117  15.382  20.666  6.502462 
+    
+    $Top
+    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.   SD
+    13.08   21.53   23.85   24.45   27.68   35.40  6.024858 
+    
+
+~~~~
+
+## Test of % Fungal Carbon by Position
+  
+    t.test(perc_fungal_N ~ erg$Position)
+
+~~~~
+
+      Welch Two Sample t-test
+    
+    data:  perc_fungal_N by erg$Position
+    t = -5.1132, df = 17.896, p-value = 7.399e-05
+    alternative hypothesis: true difference in means is not equal to 0
+    95 percent confidence interval:
+      -20.225377  -8.441749
+    sample estimates:
+      mean in group Sed mean in group Top 
+    10.11698          24.45054 
+
+~~~~
+ 
+    par(las = 1)
+    plot(perc_fungal_N ~ erg$Position, ylim = c(0, 50), ylab = "Percent of Final Leaf N Mass in Fungal C", xlab = "", col = 8, axes = F)
+    axis(2)
+    axis(1, c("Sediment Contact", "No Sediment Contact"), at = c(1, 2))
+    text(1, mean(perc_fungal_N[erg$Position == "Sed"]), "*", cex = 2)
+    text(2, mean(perc_fungal_N[erg$Position == "Top"]), "*", cex = 2)
+    box()
+    dev.copy(jpeg, "./output/plots/percent_fungal_N_mass.jpg")
+    dev.off()
+
+![Percent of final leaf C mass in fungal N mass](../output/plots/percent_fungal_N_mass.jpg)
 
 Figure: Percent of the the final leaf C mass in fungal C mass
