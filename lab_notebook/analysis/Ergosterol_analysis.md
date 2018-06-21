@@ -9,6 +9,8 @@
  * 1 Nov 2017 - KF - calculated the degree that fungal C mass was from converted leaf C
  * 25 Jan 2018 - KF - tested differences in the percent fungal carbon in the leaves
  * 30 Jan 2018 - KF - recalculated the carbon mass, and percent of fungal C to leaf C based on AFDM rather than leaf dry mass - this better matches with the mass loss analysis
+ * 20 June 2018 - KF - added analysis on the amount of N mass in the Fungi at the end of the experiment
+ * 21 Junw 2018 - KF - calculated if the amount of N mass in the fungi at the end of the experiment is sufficient to accout for the change in C:N during the experiment
  
 ### Description
 
