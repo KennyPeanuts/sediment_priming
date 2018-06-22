@@ -11,6 +11,8 @@
  * 30 Jan 2018 - KF - recalculated the carbon mass, and percent of fungal C to leaf C based on AFDM rather than leaf dry mass - this better matches with the mass loss analysis
  * 20 June 2018 - KF - added analysis on the amount of N mass in the Fungi at the end of the experiment
  * 21 June 2018 - KF - Calculted the amount of N the leaves should have lost if there was no immobilization (i.e., assuming the CN did not change during decomposition).
+ * 22 June 2018 - KF - Did stats on fungal mass, fungal C, and fungal N
+
 
 ### Description
 
@@ -173,6 +175,26 @@ $Sed
 $Top
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
 0.06946 0.12140 0.15500 0.16030 0.17510 0.30490  0.06535683
+
+~~~~
+  
+##### Test of Fungal Biomass by Position
+  
+    t.test(fungal_mass ~ Position, data = erg)
+  
+~~~~
+# t test of fungal biomass by position
+  
+  Welch Two Sample t-test
+
+data:  fungal_mass by Position
+t = -4.529, df = 12.783, p-value = 0.0005905
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+  -0.15281623 -0.05399537
+sample estimates:
+  mean in group Sed mean in group Top 
+0.05687785        0.16028365 
 
 ~~~~
   
@@ -370,19 +392,17 @@ Mean mass-based CN of a leaf disc at the beginning of the experiment
 ~~~~
       
 ### Calculate the amount of N mass lost from the leaves if we assume that N loss was proportional to initial stoichiometry
-      
-The mass loss analysis shows that the leaves did lose some N mass during the experiment so I correct the intial N mass for the observed N mass loss
-    
-    expected_delta_N_mass_SED <- (mean(disc_N_mass_init) - mean(delta_N_mass[leaf.final$Position == "Sed"])) - mean(expected_N_mass_final_SED)
-    expected_delta_N_mass_TOP <- (mean(disc_N_mass_init) - mean(delta_N_mass[leaf.final$Position == "Top"])) - mean(expected_N_mass_final_TOP)
+
+    expected_delta_N_mass_SED <- mean(disc_N_mass_init) - mean(expected_N_mass_final_SED)
+    expected_delta_N_mass_TOP <- mean(disc_N_mass_init) - mean(expected_N_mass_final_TOP)
 
 ~~~~
 # The estimated mass of N that would have been lost from a single leaf disc if the microbial community had not immobilized released DIN (mg)
       
 SED:
-      0.018876
+      0.01527134
 TOP
-      0.01630365
+      0.008627398
 ~~~~
         
 ## Comparison of the N mass expected to be lost from the leaves w/o immobilization and the amount of N mass in the Fungal biomass
@@ -398,10 +418,10 @@ The difference in the mass of N expected to be lost per leaf to mineralization a
 # The difference in the mass of N expected to be lost per leaf to mineralization and the mass of fungi in the leaf is (mg)
 
 SED:
-    0.01517894
+      0.01157428
     
 TOP:
-    0.005885216
+      -0.001791039
 ~~~~
 
 ## Calculation of the percent of expected N mass loss that is accounted for by fungal N mass
@@ -415,10 +435,26 @@ TOP:
 # The proportion of the expected lost nitrogen from leaf biomass that is found in the fungal N mass
       
 ### Sediment
-    0.1958604
-
+    0.2420914
 ### No-Sediment
-    0.6390247
+    1.207599
 ~~~~
       
 These results show that the fungal N can account for a much greater proportion of the mineralized N in the no-sediment treatment than in the sediment treatment, despite the fact that the amount of N in both treatments is essentially the same at the end of the incubation.
+    
+~~~~    
+##################################################    
+This is the code that retains the N mass loss in the calculations that I deemed not needed:
+      
+    The mass loss analysis shows that the leaves did lose some N mass during the experiment so I correct the intial N mass for the observed N mass loss
+    
+    expected_delta_N_mass_SED <- (mean(disc_N_mass_init) - mean(delta_N_mass[leaf.final$Position == "Sed"])) - mean(expected_N_mass_final_SED)
+    expected_delta_N_mass_TOP <- (mean(disc_N_mass_init) - mean(delta_N_mass[leaf.final$Position == "Top"])) - mean(expected_N_mass_final_TOP)
+
+# The estimated mass of N that would have been lost from a single leaf disc if the microbial community had not immobilized released DIN (mg)
+      
+SED:
+      0.018876
+TOP
+      0.01630365
+~~~~
