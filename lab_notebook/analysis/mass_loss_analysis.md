@@ -268,8 +268,7 @@ Min. 1st Qu.  Median    Mean 3rd Qu.    Max.     SD         N
 ~~~~
     disc_mass_init <- (init_om$om.mass[init_om$sample == "leaf"] / init_om$leaf.num[init_om$sample == "leaf"]) * 1000 # converted to mg 
 
-    init_propC <- mean(initial_cn$percC) / 100 # calculates the mean initial proportion of C
-by converting the mean percent C into a proportion
+    init_propC <- mean(initial_cn$percC) / 100 # calculates the mean initial proportion of C by converting the mean percent C into a proportion
 
     disc_C_mass_init <- disc_mass_init * init_propC
 

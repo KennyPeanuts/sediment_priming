@@ -10,7 +10,8 @@
  * 25 Jan 2018 - KF - tested differences in the percent fungal carbon in the leaves
  * 30 Jan 2018 - KF - recalculated the carbon mass, and percent of fungal C to leaf C based on AFDM rather than leaf dry mass - this better matches with the mass loss analysis
  * 20 June 2018 - KF - added analysis on the amount of N mass in the Fungi at the end of the experiment
- 
+ * 21 June 2018 - KF - Calculted the amount of N the leaves should have lost if there was no immobilization (i.e., assuming the CN did not change during decomposition).
+
 ### Description
 
 These analyses are to evaluate the Ergosterol Content of the leaves in the sediment priming experiment. Details on the experimental set-up and execution can be found: [https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/lab_notes/Notes_on_set_up.md](https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/lab_notes/Notes_on_set_up.md) & [https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/lab_notes/Notes_on_breakdown.md](https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/lab_notes/Notes_on_breakdown.md)
@@ -341,6 +342,7 @@ Mean mass-based CN of a leaf disc at the beginning of the experiment
 #### Sediment Treatment
 
     expected_N_mass_final_SED <- (disc_C_mass_final_SED / CN_mass_init) * 1000 # convert to mg
+    
     summary(expected_N_mass_final_SED)
     sd(expected_N_mass_final_SED)
     
@@ -360,7 +362,8 @@ Mean mass-based CN of a leaf disc at the beginning of the experiment
     sd(expected_N_mass_final_TOP)
     
 ~~~~
-# The mass of N expected in the leaves based on the CN assuming that no N was immobilized (mg) 
+# The mass of N expected in the leaves based on the CN assuming that no N was immobilized
+## (mg)
 ## No-Sediment Treatmen
       Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
     0.01939 0.02291 0.02503 0.02625 0.03035 0.03398 0.005023328
@@ -401,4 +404,20 @@ TOP:
     0.005885216
 ~~~~
 
-   
+## Calculation of the percent of expected N mass loss that is accounted for by fungal N mass
+  
+### Sediment Treatment       
+    mean(fungal_N_mass[erg$Position == "Sed"]) / expected_delta_N_mass_SED 
+### No-Sediment Treatment
+    mean(fungal_N_mass[erg$Position == "Top"]) / expected_delta_N_mass_TOP 
+    
+~~~~
+# The proportion of the expected lost nitrogen from leaf biomass that is found in the fungal N mass
+      
+### Sediment
+    0.1958604
+
+### No-Sediment
+    0.6390247
+    
+These results show that the fungal N can account for a much greater proportion of the mineralized N in the no-sediment treatment than in the sediment treatment, despite the fact that the amount of N in both treatments is essentially the same at the end of the incubation.
