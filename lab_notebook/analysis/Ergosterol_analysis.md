@@ -419,5 +419,6 @@ TOP:
 
 ### No-Sediment
     0.6390247
-    
+~~~~
+      
 These results show that the fungal N can account for a much greater proportion of the mineralized N in the no-sediment treatment than in the sediment treatment, despite the fact that the amount of N in both treatments is essentially the same at the end of the incubation.
