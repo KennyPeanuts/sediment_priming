@@ -266,6 +266,7 @@ The initial leaf disc masses are calculated by dividing the total sample AFDM ma
 Min. 1st Qu.  Median    Mean 3rd Qu.    Max.     SD         N
   1.283   1.499   1.597   1.594   1.656   1.899  0.1884964  9
 ~~~~
+    
     disc_mass_init <- (init_om$om.mass[init_om$sample == "leaf"] / init_om$leaf.num[init_om$sample == "leaf"]) * 1000 # converted to mg 
 
     init_propC <- mean(initial_cn$percC) / 100 # calculates the mean initial proportion of C by converting the mean percent C into a proportion
@@ -440,4 +441,46 @@ mean in group Sed mean in group Top
 
 
 ![Delta N mass ](../output/plots/delta_n_mass.jpg)
- 
+
+## Mass Balance of C and N 
+    
+This estimates the mass of C and N that passes from a single leaf disc to the the fungi and also size of missing compartments that were not measured (e.g., CO2)
+
+To simplify the legibility of the code, I create new objects that represent the pools and fluxes of the model in each treatment level.
+
+### Pools
+
+NOTE: You have to run the Ergosterol_analysis.md code [https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/analysis/Ergosterol_analysis.md](https://github.com/KennyPeanuts/sediment_priming/blob/master/lab_notebook/analysis/Ergosterol_analysis.md) prior to createing these objects.
+
+* leaf_initial_C_mass = the average mass of C in a single leaf disc prior to the incubation (mg)
+    leaf_initial_C_mass <- mean(disc_C_mass_init)
+
+* leaf_final_C_mass_TOP = the average mass of C in a single leaf disc not in contact with the sediments after the incubation (mg)
+    leaf_final_C_mass_TOP <- mean(disc_C_mass_final_TOP)
+
+* leaf_final_C_mass_SED = the average mass of C in a single leaf disc in contact with the sediments after the incubation (mg)
+    leaf_final_C_mass_SED <- mean(disc_C_mass_final_SED)
+
+* fungi_C_mass_TOP = the average mass of C in the fungi on a single leaf disc not in contact witht the sediments after the incubation (mg)
+    fungi_C_mass_TOP <- mean(fungal_C_mass[erg$Position == "Top"])
+
+* fungi_C_mass_SED = the average mass of C in the fungi on a single leaf disc in contact with the sediments after the incubation (mg)
+    fungi_C_mass_SED <- mean(fungal_C_mass[erg$Position == "Sed"])
+    
+* leaf_initial_N_mass = the average mass of N in a single leaf disc prior to the incubation (mg)
+    leaf_initial_N_mass <- mean(disc_N_mass_init)
+
+* leaf_final_N_mass_TOP = the average mass of N in a single leaf disc not in contact with the sediments after the incubation (mg)
+    leaf_final_N_mass_TOP <- mean(disc_N_mass_final_TOP)
+
+* leaf_final_N_mass_SED = the average mass of N in a single leaf disc in contact with the sediments after the incubation (mg)
+    leaf_final_N_mass_SED <- mean(disc_N_mass_final_SED)
+
+* fungi_N_mass_TOP = the average mass of N in the fungi on a single leaf disc not in contact witht the sediments after the incubation (mg)
+    fungi_N_mass_TOP <- mean(fungal_N_mass[erg$Position == "Top"])
+
+* fungi_N_mass_SED = the average mass of N in the fungi on a single leaf disc in contact with the sediments after the incubation (mg)
+    fungi_N_mass_SED <- mean(fungal_N_mass[erg$Position == "Sed"])
+
+### Fluxes
+    
