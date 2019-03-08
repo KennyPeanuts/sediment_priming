@@ -30,11 +30,13 @@ Three replicate leaves were haphazardly selected from each bottle and run on the
 
 ### Create data.frame with mean toughness values
 
-    bottle <- rep(1:10, 2)
-    Position <- c(rep("Top", 10), rep("Sed", 10))
+    bottle <- rep(LETTERS[1:10], 2)
+    bottle <- as.factor(bottle)
+    position <- c(rep("Top", 10), rep("Sed", 10))
+    position <- as.factor(position)
     mean.tough <- c(mean.tough.top, mean.tough.sed)
 
-    mean_tough <- data.frame(Position, bottle, mean.tough)
+    mean_tough <- data.frame(position, bottle, mean.tough)
 
 #### Summary Statistics
 
@@ -61,7 +63,7 @@ Summary Statistics for the mass (g) required to puncture the leaves on the sedim
 ~~~~
 
 ### Analysis of the effect of position on mass (g) required to puncture the leaves
- 
+#### Using t-test 
     t.test(mean.tough.sed, mean.tough.top)
 
 ~~~~
@@ -78,7 +80,15 @@ mean of x mean of y
  21.78453  38.14424 
 
 ~~~~
+
+#### Using Split Plot Model
+In this case the bottles are the blocks and the location is the sub-plot.  As a result, the location is nested within the bottle. This is required because the locations in each bottle are not independent of each other.
  
+    tough.mod <- aov(mean.tough ~ position + Error(position:bottle), data = mean_tough)
+    summary(tough.mod)
+    
+This yields a singular model. 
+
 ### Plots
  
     par(las = 1, cex = 1.2, mar = c(4, 5, 4, 5))
