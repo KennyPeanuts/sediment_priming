@@ -6,6 +6,7 @@
 
 * Modified:
   * 7 Feb 2018 - KF - added correlation with CN
+  * 8 March 2019 - KF - re-analyzed the toughness data as the difference between the top and sediment.
 
 ### Description
 
@@ -54,14 +55,22 @@ Summary Statistics for the mass (g) required to puncture the leaves off the sedi
     summary(mean.tough.sed)
     sd(mean.tough.sed)
 
-~~~~
+####################
 Summary Statistics for the mass (g) required to puncture the leaves on the sediments (sed)
 
  Min.    1st Qu.  Median    Mean    3rd Qu.    Max.    SD 
  13.47   17.98    19.82     21.78   22.70      35.87   6.700327
 
-~~~~
+####################
+   
+### Create data.frame with difference in mean toughness values
 
+    bottle <- LETTERS[1:10]
+    bottle <- as.factor(bottle)
+    diff.mean.tough <- mean.tough.top - mean.tough.sed
+
+    diff.tough <- data.frame(bottle, diff.mean.tough)
+    
 ### Analysis of the effect of position on mass (g) required to puncture the leaves
 #### Using t-test 
     t.test(mean.tough.sed, mean.tough.top)
@@ -81,14 +90,23 @@ mean of x mean of y
 
 ~~~~
 
-#### Using Split Plot Model
-In this case the bottles are the blocks and the location is the sub-plot.  As a result, the location is nested within the bottle. This is required because the locations in each bottle are not independent of each other.
- 
-    tough.mod <- aov(mean.tough ~ position + Error(position:bottle), data = mean_tough)
-    summary(tough.mod)
-    
-This yields a singular model. 
+#### Using the difference between the top and sed leaf toughness 
+Since the locations in each bottle are not independent of each other, I calculated the difference between the top and the sediment leaf discs and then used a t-test to check if the difference was != 0
 
+    t.test(diff.tough$diff.mean.tough, mu = 0)
+
+#############################
+    One Sample t-test
+    
+    data:  diff.tough$diff.mean.tough
+    t = 4.033, df = 9, p-value = 0.00296
+    alternative hypothesis: true mean is not equal to 0
+    95 percent confidence interval:
+      7.18338 25.53603
+    sample estimates:
+      mean of x 
+    16.35971 
+#############################
 ### Plots
  
     par(las = 1, cex = 1.2, mar = c(4, 5, 4, 5))

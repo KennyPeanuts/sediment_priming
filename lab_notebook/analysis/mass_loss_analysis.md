@@ -8,6 +8,7 @@
     * 30 Jan 2018 - KF - summarized the leaf disc mass
     * 2 Feb 2018 - KF - consolodated all of the mass loss analysis here - including AFDM, C and N
     * 20 Feb 2018 - KF - NOTE I recalculated the mass loss for C and N using the masses from the data but then realized that these were just molar masses calculated with a constant rather than from the sample masses so they provided no information beyond that of the percents.  I reverted those calculations back to this version which has the C and N mass calculated as the propC or N multipled by the AFDM.
+    * 8 March 2019 - KF - re-analyzed the significance of the location using the difference between the top and the sediment leaves and then tested if mean == 0 with a t-test.
 
 
 ### Description
@@ -64,7 +65,7 @@ Briefly, each of the initial samples contained 20, 10 mm leaf discs that were cu
     sd(initial_cn$CN)
     length(initial_cn$CN) #just chose a variable but all the lengths are the same
 
-~~~~
+##############################
 
 rep       percC           percN              CN       
  A:1   Min.   :44.47   Min.   :0.9400   Min.   :50.39  
@@ -76,7 +77,8 @@ rep       percC           percN              CN
        SD: 0.940452    SD: 0.06363961   SD: 4.298354
        N   2           N  2             N   2
 
-~~~~
+###########################
+       
 ### Determine Average Final AFDM
   
     final.DM <- leaf.final$CrucLeafDM - leaf.final$CrucMass
@@ -93,20 +95,17 @@ Since there were different numbers of leaves in the crucibles `final.AFDM` is th
     tapply(final.leaf.AFDM * 1000, leaf.final$Position, sd)
     tapply(final.leaf.AFDM * 1000, leaf.final$Position, length)
 
-~~~~
-# Summary of the average mass of a single leaf disc at the end of the exp, by position (mg)
+#####################
+    # Summary of the average mass of a single leaf disc at the end of the exp, by position (mg)
  
-$Sed
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD         N
-  1.940   2.155   2.490   2.440   2.515   3.480  0.4320494  10
+    $Sed
+    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD         N
+    1.940   2.155   2.490   2.440   2.515   3.480  0.4320494  10
 
-$Top
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD         N
-  1.920   2.315   2.580   2.677   3.125   3.540  0.5362904  10
-
-
-~~~~
-
+    $Top
+    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD         N
+    1.920   2.315   2.580   2.677   3.125   3.540  0.5362904  10
+####################
 
 ###  Determine Mass Lost
 
@@ -116,17 +115,17 @@ $Top
     tapply(AFDM.loss * 1000, leaf.final$Position, sd)
     tapply(AFDM.loss * 1000, leaf.final$Position, length)
  
-~~~~
-AFDM Loss from each postion (mg)
+####################
+    AFDM Loss from each postion (mg)
 
-$Sed
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD        N
-0.06111 1.02600 1.05100 1.10100 1.38600 1.60100  0.4320494 10
+    $Sed
+    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD        N
+    0.06111 1.02600 1.05100 1.10100 1.38600 1.60100  0.4320494 10
 
-$Top
+    $Top
     Min.  1st Qu.   Median     Mean  3rd Qu.     Max.  SD        N
-0.001111 0.416100 0.961100 0.864400 1.226000 1.621000  0.5362904 10
-~~~~
+    0.001111 0.416100 0.961100 0.864400 1.226000 1.621000  0.5362904 10
+####################
  
 ### Compare mass loss by position
 
@@ -145,6 +144,25 @@ $Top
 Mass lost from leaves in the sediments or water column
 
 #### Statistical Analysis
+
+##### Calculate the difference in AFDM loss
+
+    diff.AFDM.loss <- AFDM.loss[leaf.final$Position == "Top"] - AFDM.loss[leaf.final$Position == "Sed"]
+    
+    t.test(diff.AFDM.loss, mu = 0)
+    
+####################
+    One Sample t-test
+    
+    data:  diff.AFDM.loss
+    t = -0.85718, df = 9, p-value = 0.4136
+    alternative hypothesis: true mean is not equal to 0
+    95 percent confidence interval:
+      -0.0008612448  0.0003879115
+    sample estimates:
+      mean of x 
+    -0.0002366667 
+####################
 ##### t-test
 
      t.test(AFDM.loss ~ Position, data = leaf.final)
