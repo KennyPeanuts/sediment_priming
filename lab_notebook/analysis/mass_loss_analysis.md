@@ -8,7 +8,8 @@
     * 30 Jan 2018 - KF - summarized the leaf disc mass
     * 2 Feb 2018 - KF - consolodated all of the mass loss analysis here - including AFDM, C and N
     * 20 Feb 2018 - KF - NOTE I recalculated the mass loss for C and N using the masses from the data but then realized that these were just molar masses calculated with a constant rather than from the sample masses so they provided no information beyond that of the percents.  I reverted those calculations back to this version which has the C and N mass calculated as the propC or N multipled by the AFDM.
-    * 8 March 2019 - KF - re-analyzed the significance of the location using the difference between the top and the sediment leaves and then tested if mean == 0 with a t-test.
+    * 8 March 2019 - KF - re-analyzed the significance of AFDM loss the location using the difference between the top and the sediment leaves and then tested if mean == 0 with a t-test.
+    * 15 April - KF - re-analyzed the significance of C and N mass loss the location using the difference between the top and the sediment leaves and then tested if mean == 0 with a t-test. Made plots of the AFDM loss, C mass loss, and N mass loss difference.
 
 
 ### Description
@@ -65,8 +66,6 @@ Briefly, each of the initial samples contained 20, 10 mm leaf discs that were cu
     sd(initial_cn$CN)
     length(initial_cn$CN) #just chose a variable but all the lengths are the same
 
-
-       
 ### Determine Average Final AFDM
   
     final.DM <- leaf.final$CrucLeafDM - leaf.final$CrucMass
@@ -83,7 +82,8 @@ Since there were different numbers of leaves in the crucibles `final.AFDM` is th
     tapply(final.leaf.AFDM * 1000, leaf.final$Position, sd)
     tapply(final.leaf.AFDM * 1000, leaf.final$Position, length)
 
-#####################
+#===============================================
+    
     # Summary of the average mass of a single leaf disc at the end of the exp, by position (mg)
  
     $Sed
@@ -93,7 +93,7 @@ Since there were different numbers of leaves in the crucibles `final.AFDM` is th
     $Top
     Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD         N
     1.920   2.315   2.580   2.677   3.125   3.540  0.5362904  10
-####################
+#==================================================
 
 ###  Determine Mass Lost
 
@@ -103,7 +103,7 @@ Since there were different numbers of leaves in the crucibles `final.AFDM` is th
     tapply(AFDM.loss * 1000, leaf.final$Position, sd)
     tapply(AFDM.loss * 1000, leaf.final$Position, length)
  
-####################
+#=======================================
     AFDM Loss from each postion (mg)
 
     $Sed
@@ -113,7 +113,7 @@ Since there were different numbers of leaves in the crucibles `final.AFDM` is th
     $Top
     Min.  1st Qu.   Median     Mean  3rd Qu.     Max.  SD        N
     0.001111 0.416100 0.961100 0.864400 1.226000 1.621000  0.5362904 10
-####################
+#=======================================
  
 ## Statistical Analysis
 
@@ -138,7 +138,12 @@ Using a t-test of the difference between the leaves on the top and sed is the be
     -0.0002366667 
 #============================== 
 
-
+#### Plot of the difference in AFDM loss between the top and sed leaves
+    
+    par(las = 1)
+    plot((diff.AFDM.loss * 1000), xlim = c(0, 11))
+    abline(h = 0)
+    
 ### Determine the C mass of the leaves
  
 
@@ -256,6 +261,12 @@ Using a t-test of the difference between the leaves on the top and sed is the be
    -0.304441 
 #============================== 
 
+#### Plot of the difference in C mass loss between the top and sed leaves
+    
+    par(las = 1)
+    plot((diff.C.mass.loss), xlim = c(0, 11), ylim = c(-1.5, 1.5))
+    abline(h = 0)
+    
 ### Determination of the change in N mass in the leaves 
 
 This is done the same way as was done with C above.
@@ -327,17 +338,42 @@ $Top
 Using a t-test of the difference between the leaves on the top and sed is the best approach since it does not treat the leaves in the different positions to be independent but tests if their difference is not equal to 0, which would indicate that one position is consistently greater or lesser.
     
 #============================== 
-One Sample t-test
 
-data:  diff.N.mass.loss
-t = -0.72533, df = 9, p-value = 0.4867
-alternative hypothesis: true mean is not equal to 0
-95 percent confidence interval:
-  -0.016770136  0.008626936
-sample estimates:
-  mean of x 
--0.0040716 
+     One Sample t-test
+
+     data:  diff.N.mass.loss
+     t = -0.72533, df = 9, p-value = 0.4867
+     alternative hypothesis: true mean is not equal to 0
+     95 percent confidence interval:
+     -0.016770136  0.008626936
+     sample estimates:
+     mean of x 
+     -0.0040716
+     
 #============================== 
+
+## Main Plot of AFDM, C mass, and N mass Loss
+     
+     par(las = 1)
+     plot(diff.AFDM.loss * 1000, diff.C.mass.loss, xlab = "Difference in AFDM Loss Between WATER and SEDIMENT Leaf Discs", ylab = "Difference in C or N Mass Loss Between WATER and SEDIMENT Leaf Discs")
+     points(diff.AFDM.loss * 1000, diff.N.mass.loss, pch = 19)
+     abline(v = 0)
+     abline(h = 0)
+
+     par(las = 1)
+     plot(diff.AFDM.loss * 1000, xlim = c(0, 11), xlab = "Bottle", ylab = "Mass Loss Difference", axes = F)
+     points(diff.C.mass.loss, pch = 19)
+     points(diff.N.mass.loss, pch = 2)
+     axis(2)
+     axis(1, 1:10, at = 1:10)
+     abline(h = 0)
+     text(4, 1, "Greater mass lost from No-Sediment Disc")
+     text(4, -1, "Greater mass lost from Sediment Disc")
+     box()
+     dev.copy(jpeg, "./output/plots/mass_loss_diff.jpg")
+     dev.off()
+
+[Diff in mass lost from leaves in the sediments or water column](../output/plots/mass_loss_diff.jpg)
 
 ## Mass Balance of C and N 
     
