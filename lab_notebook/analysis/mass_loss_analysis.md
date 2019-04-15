@@ -65,19 +65,7 @@ Briefly, each of the initial samples contained 20, 10 mm leaf discs that were cu
     sd(initial_cn$CN)
     length(initial_cn$CN) #just chose a variable but all the lengths are the same
 
-##############################
 
-rep       percC           percN              CN       
- A:1   Min.   :44.47   Min.   :0.9400   Min.   :50.39  
- B:1   1st Qu.:44.80   1st Qu.:0.9625   1st Qu.:51.91  
-       Median :45.13   Median :0.9850   Median :53.43  
-       Mean   :45.13   Mean   :0.9850   Mean   :53.43  
-       3rd Qu.:45.47   3rd Qu.:1.0075   3rd Qu.:54.95  
-       Max.   :45.80   Max.   :1.0300   Max.   :56.47  
-       SD: 0.940452    SD: 0.06363961   SD: 4.298354
-       N   2           N  2             N   2
-
-###########################
        
 ### Determine Average Final AFDM
   
@@ -127,23 +115,7 @@ Since there were different numbers of leaves in the crucibles `final.AFDM` is th
     0.001111 0.416100 0.961100 0.864400 1.226000 1.621000  0.5362904 10
 ####################
  
-### Compare mass loss by position
-
-    par(las = 1, mar = c(4, 5, 4, 5), cex = 1.2)
-    plot(AFDM.loss * 1000 ~ Position, data = leaf.final, ylim = c(0, 2), xlim = c(.50, 2.5), axes = F, xlab = " ", ylab = "Mass Loss (mg AFDM)", col = "gray")
-    text(1, mean(AFDM.loss[leaf.final$Position == "Sed"] * 1000), "*", cex = 2)
-    text(2, mean(AFDM.loss[leaf.final$Position == "Top"] * 1000), "*", cex = 2)
-    axis(2)
-    axis(1, c("Sediment Contact", "No Sed. Contact"), at = c(1, 2))
-    box()
-    dev.copy(jpeg, "./output/plots/mass_loss.jpg")
-    dev.off()
-
-[Mass lost from leaves in the sediments or water column](../output/plots/mass_loss.jpg)
-
-Mass lost from leaves in the sediments or water column
-
-#### Statistical Analysis
+## Statistical Analysis
 
 ##### Calculate the difference in AFDM loss
 
@@ -151,7 +123,9 @@ Mass lost from leaves in the sediments or water column
     
     t.test(diff.AFDM.loss, mu = 0)
     
-####################
+Using a t-test of the difference between the leaves on the top and sed is the best approach since it does not treat the leaves in the different positions to be independent but tests if their difference is not equal to 0, which would indicate that one position is consistently greater or lesser.
+    
+#============================== 
     One Sample t-test
     
     data:  diff.AFDM.loss
@@ -162,73 +136,8 @@ Mass lost from leaves in the sediments or water column
     sample estimates:
       mean of x 
     -0.0002366667 
-####################
-##### t-test
+#============================== 
 
-     t.test(AFDM.loss ~ Position, data = leaf.final)
-     
-~~~~
-
- Welch Two Sample t-test
-
-data:  AFDM.loss by Position
-t = 1.0867, df = 17.22, p-value = 0.2921
-alternative hypothesis: true difference in means is not equal to 0
-95 percent confidence interval:
- -0.0002223588  0.0006956921
-sample estimates:
-mean in group Sed mean in group Top 
-     0.0011011111      0.0008644444 
-
-~~~~
-
-Two-way ANOVA including the effect of the bottles
-
-    anova(lm(AFDM.loss ~ Position * Bottle, data = leaf.final))
-
-~~~~
-
-  Analysis of Variance Table
-
-Response: AFDM.loss
-Df     Sum Sq    Mean Sq F value Pr(>F)
-Position         1 2.8010e-07 2.8006e-07  1.0915 0.3117
-Bottle           1 4.3200e-08 4.3205e-08  0.1684 0.6870
-Position:Bottle  1 1.2000e-07 1.2002e-07  0.4678 0.5038
-Residuals       16 4.1052e-06 2.5658e-07 
-
-~~~~
-  
-##### Determine the difference between the loss in the water and sed leaves
-  
-    loss.diff <- AFDM.loss[leaf.final$Position == "Sed"] - AFDM.loss[leaf.final$Position == "Top"]
-
-    par(las = 1)
-    plot(loss.diff * 1000 ~ leaf.final$Bottle[leaf.final$Position == "Top"], xlab = "Bottle", ylab = "Sediment Mass Loss - Water Col. Mass Loss (mg AFDM)")
-    abline(h = 0)
-    dev.copy(jpeg, "./output/plots/mass_loss_diff.jpg")
-    dev.off()
-
-![Sediment Mass Loss - Water Column Mass Loss](../output/plots/mass_loss_diff.jpg)
-
-Sediment Mass Loss - Water Column Mass Loss
-
-##### Determine the 95% CI of the difference in mass loss
-
-    t.test(loss.diff)
-
-~~~~
-One Sample t-test
-
-data:  loss.diff
-t = 0.8572, df = 9, p-value = 0.4136
-alternative hypothesis: true mean is not equal to 0
-95 percent confidence interval:
- -0.0003879115  0.0008612448
-sample estimates:
-   mean of x 
-0.0002366667 
-~~~~
 
 ### Determine the C mass of the leaves
  
@@ -324,48 +233,28 @@ $Top
 
 ~~~~~
  
- 
-##### Test of Change in C mass of a leaf Disc during incbation by position
+## Statistical Analysis
 
-    t.test(delta_C_mass ~ leaf.final$Position)
- 
-~~~~
-Welch Two Sample t-test
+##### Calculate the difference in delta C mass loss betweeen top and sed
 
-data:  delta_C_mass by leaf.final$Position
-t = 3.4351, df = 16.045, p-value = 0.003387
-alternative hypothesis: true difference in means is not equal to 0
-95 percent confidence interval:
- 0.1166032 0.4922788
-sample estimates:
-mean in group Sed mean in group Top 
-        0.6997685         0.3953275 
-~~~~
+    diff.C.mass.loss <- delta_C_mass[leaf.final$Position == "Top"] - delta_C_mass[leaf.final$Position == "Sed"]
+    
+    t.test(diff.C.mass.loss, mu = 0)
+    
+Using a t-test of the difference between the leaves on the top and sed is the best approach since it does not treat the leaves in the different positions to be independent but tests if their difference is not equal to 0, which would indicate that one position is consistently greater or lesser.
+    
+#============================== 
+    One Sample t-test
 
- 
-    par(las = 1)
-    plot(delta_C_mass ~ leaf.final$Position, ylim = c(0, 1), ylab = "C Mass Loss (mg)", xlab = "Position", col = "grey")
-    text(1, mean(delta_C_mass[leaf.final$Position == "Sed"]), "*", cex = 2)
-    text(2, mean(delta_C_mass[leaf.final$Position == "Top"]), "*", cex = 2)
-    dev.copy(jpeg, "./output/plots/delta_c_mass.jpg")
-    dev.off()
-
-
-![Delta C mass ](../output/plots/delta_c_mass.jpg)
-
-Figure: Change in final leaf C mass
-
-    par(las = 1)
-    plot((leaf.final$AFDM[leaf.final$Position == "Sed"] * 1000), (disc_C_mass_final_SED * 1000) , ylim = c(0, 2), xlim = c(0, 4), ylab = "C Mass (mg)", xlab = "AFDM (mg)", pch = 1)
-    points((leaf.final$AFDM[leaf.final$Position == "Top"] * 1000), (disc_C_mass_final_TOP * 1000), pch = 19)
-    legend(0, 2, c("Sediment Contact", "No Sediment Contact"), pch = c(1, 19))
-    dev.copy(jpeg, "./output/plots/C_mass_by_AFDM.jpg")
-    dev.off()
-
-
-![C Mass plotted against AFDM](../output/plots/C_mass_by_AFDM.jpg)
-
-Figure: C mass plotted against AFDM for the leaf discs
+    data:  diff.C.mass.loss
+    t = -2.7984, df = 9, p-value = 0.02077
+    alternative hypothesis: true mean is not equal to 0
+    95 percent confidence interval:
+     -0.55054121 -0.05834079
+    sample estimates:
+    mean of x 
+   -0.304441 
+#============================== 
 
 ### Determination of the change in N mass in the leaves 
 
@@ -428,37 +317,27 @@ $Top
 -0.0323800 -0.0178200 -0.0030520 -0.0076760  0.0002059  0.0099200 0.013079830  10
 
 ~~~~
+        
+##### Calculate the difference in delta N mass loss betweeen top and sed
 
-##### Test of N Mass Loss
- 
-     t.test(delta_N_mass ~ leaf.final$Position)
+    diff.N.mass.loss <- delta_N_mass[leaf.final$Position == "Top"] - delta_N_mass[leaf.final$Position == "Sed"]
+    
+    t.test(diff.N.mass.loss, mu = 0)
+    
+Using a t-test of the difference between the leaves on the top and sed is the best approach since it does not treat the leaves in the different positions to be independent but tests if their difference is not equal to 0, which would indicate that one position is consistently greater or lesser.
+    
+#============================== 
+One Sample t-test
 
-~~~~
- 
-Welch Two Sample t-test
-
-data:  delta_N_mass by leaf.final$Position
-t = 0.8729, df = 13.555, p-value = 0.3979
-alternative hypothesis: true difference in means is not equal to 0
+data:  diff.N.mass.loss
+t = -0.72533, df = 9, p-value = 0.4867
+alternative hypothesis: true mean is not equal to 0
 95 percent confidence interval:
- -0.005963507  0.014106707
+  -0.016770136  0.008626936
 sample estimates:
-mean in group Sed mean in group Top 
-     -0.003604656      -0.007676256 
-
-~~~~
- 
-##### Plot of N Mass Loss 
- 
-    par(las = 1)
-    plot(delta_N_mass ~ leaf.final$Position, ylim = c(-0.04, 0.01), ylab = "N Mass Loss (mg)", xlab = "Position", col = "grey")
-    text(1, mean(delta_N_mass[leaf.final$Position == "Sed"]), "*", cex = 2)
-    text(2, mean(delta_N_mass[leaf.final$Position == "Top"]), "*", cex = 2)
-    dev.copy(jpeg, "./output/plots/delta_n_mass.jpg")
-    dev.off()
-
-
-![Delta N mass ](../output/plots/delta_n_mass.jpg)
+  mean of x 
+-0.0040716 
+#============================== 
 
 ## Mass Balance of C and N 
     
@@ -526,3 +405,134 @@ NOTE: You have to run the Ergosterol_analysis.md code [https://github.com/KennyP
 
     fungi_N_mass_SED <- mean(fungal_N_mass[erg$Position == "Sed"])
     
+## Statistical Results based on Position (NO NOT USE)
+    
+The results below based on position are not appropriate because the treat the leaves on the sed and top as independent samples. I am keeping the code just in case I want to refer to it.
+    
+### Compare mass loss by position
+
+    par(las = 1, mar = c(4, 5, 4, 5), cex = 1.2)
+    plot(AFDM.loss * 1000 ~ Position, data = leaf.final, ylim = c(0, 2), xlim = c(.50, 2.5), axes = F, xlab = " ", ylab = "Mass Loss (mg AFDM)", col = "gray")
+    text(1, mean(AFDM.loss[leaf.final$Position == "Sed"] * 1000), "*", cex = 2)
+    text(2, mean(AFDM.loss[leaf.final$Position == "Top"] * 1000), "*", cex = 2)
+    axis(2)
+    axis(1, c("Sediment Contact", "No Sed. Contact"), at = c(1, 2))
+    box()
+    dev.copy(jpeg, "./output/plots/mass_loss.jpg")
+    dev.off()
+
+[Mass lost from leaves in the sediments or water column](../output/plots/mass_loss.jpg)
+
+Mass lost from leaves in the sediments or water column
+
+##### t-test
+
+     t.test(AFDM.loss ~ Position, data = leaf.final)
+     
+~~~~
+
+ Welch Two Sample t-test
+
+data:  AFDM.loss by Position
+t = 1.0867, df = 17.22, p-value = 0.2921
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -0.0002223588  0.0006956921
+sample estimates:
+mean in group Sed mean in group Top 
+     0.0011011111      0.0008644444 
+
+~~~~
+
+Two-way ANOVA including the effect of the bottles
+
+    anova(lm(AFDM.loss ~ Position * Bottle, data = leaf.final))
+
+~~~~
+
+  Analysis of Variance Table
+
+Response: AFDM.loss
+Df     Sum Sq    Mean Sq F value Pr(>F)
+Position         1 2.8010e-07 2.8006e-07  1.0915 0.3117
+Bottle           1 4.3200e-08 4.3205e-08  0.1684 0.6870
+Position:Bottle  1 1.2000e-07 1.2002e-07  0.4678 0.5038
+Residuals       16 4.1052e-06 2.5658e-07 
+
+~~~~
+  
+
+##### Test of Change in C mass of a leaf Disc during incbation by position
+
+    t.test(delta_C_mass ~ leaf.final$Position)
+ 
+~~~~
+Welch Two Sample t-test
+
+data:  delta_C_mass by leaf.final$Position
+t = 3.4351, df = 16.045, p-value = 0.003387
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.1166032 0.4922788
+sample estimates:
+mean in group Sed mean in group Top 
+        0.6997685         0.3953275 
+~~~~
+
+ 
+    par(las = 1)
+    plot(delta_C_mass ~ leaf.final$Position, ylim = c(0, 1), ylab = "C Mass Loss (mg)", xlab = "Position", col = "grey")
+    text(1, mean(delta_C_mass[leaf.final$Position == "Sed"]), "*", cex = 2)
+    text(2, mean(delta_C_mass[leaf.final$Position == "Top"]), "*", cex = 2)
+    dev.copy(jpeg, "./output/plots/delta_c_mass.jpg")
+    dev.off()
+
+
+![Delta C mass ](../output/plots/delta_c_mass.jpg)
+
+Figure: Change in final leaf C mass
+
+    par(las = 1)
+    plot((leaf.final$AFDM[leaf.final$Position == "Sed"] * 1000), (disc_C_mass_final_SED * 1000) , ylim = c(0, 2), xlim = c(0, 4), ylab = "C Mass (mg)", xlab = "AFDM (mg)", pch = 1)
+    points((leaf.final$AFDM[leaf.final$Position == "Top"] * 1000), (disc_C_mass_final_TOP * 1000), pch = 19)
+    legend(0, 2, c("Sediment Contact", "No Sediment Contact"), pch = c(1, 19))
+    dev.copy(jpeg, "./output/plots/C_mass_by_AFDM.jpg")
+    dev.off()
+
+
+![C Mass plotted against AFDM](../output/plots/C_mass_by_AFDM.jpg)
+
+Figure: C mass plotted against AFDM for the leaf discs
+
+
+##### Test of N Mass Loss
+ 
+     t.test(delta_N_mass ~ leaf.final$Position)
+
+~~~~
+ 
+Welch Two Sample t-test
+
+data:  delta_N_mass by leaf.final$Position
+t = 0.8729, df = 13.555, p-value = 0.3979
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -0.005963507  0.014106707
+sample estimates:
+mean in group Sed mean in group Top 
+     -0.003604656      -0.007676256 
+
+~~~~
+ 
+##### Plot of N Mass Loss 
+ 
+    par(las = 1)
+    plot(delta_N_mass ~ leaf.final$Position, ylim = c(-0.04, 0.01), ylab = "N Mass Loss (mg)", xlab = "Position", col = "grey")
+    text(1, mean(delta_N_mass[leaf.final$Position == "Sed"]), "*", cex = 2)
+    text(2, mean(delta_N_mass[leaf.final$Position == "Top"]), "*", cex = 2)
+    dev.copy(jpeg, "./output/plots/delta_n_mass.jpg")
+    dev.off()
+
+
+![Delta N mass ](../output/plots/delta_n_mass.jpg)
+
