@@ -7,6 +7,7 @@
 * Modified: 
 
   * 22 Feb 2018 - KF - added test of the change in percent C and N
+  * 17 April 2019 - KF - re-analyzed the significance of C and N percent changes by location using the difference between the top and the sediment leaves and then tested if mean == 0 with a t-test. Made new plots.
   
   
 ### Description
@@ -73,10 +74,34 @@ $top
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
   43.59   44.45   45.21   45.02   45.40   46.28  0.847074
 ~~~~
- 
-## Analysis of the Effect of Position on CN
 
-    par(las = 1)
+## Analysis of the Effect of Position on CN
+### Statistical Tests of the Difference in position == 0
+    
+##### Calculate the difference in CN
+    
+    diff.CN <- leaf$CN[leaf$pos == "top"] - leaf$CN[leaf$pos == "sed"]
+
+#### Test the difference between the "top" and "sed" samples == 0
+  
+    t.test(diff.CN, mu = 0)
+    
+#==============================   
+    
+    One Sample t-test
+    
+    data:  diff.CN
+    t = 3.9626, df = 9, p-value = 0.003291
+    alternative hypothesis: true mean is not equal to 0
+    95 percent confidence interval:
+      2.915984 10.674593
+    sample estimates:
+      mean of x 
+    6.795288 
+    
+#============================== 
+  
+  par(las = 1)
     plot(CN ~ pos, data = leaf, ylim = c(0, 50), ylab = "C:N", xlab = "Leaf Position", col = "lightsalmon", axes = F)
     axis(2)
     axis(1, c("Sediment Contact", "No Sediment Contact"), at = c(1, 2))
@@ -86,38 +111,34 @@ $top
 
 ![CN by leaf Position](../output/plots/CN_by_position.jpg)
 
-### T-test
-
-    t.test(CN ~ pos, data = leaf)
-
-~~~~
- Welch Two Sample t-test
-
-data:  CN by pos
-t = -4.3588, df = 10.568, p-value = 0.00125
-alternative hypothesis: true difference in means is not equal to 0
-95 percent confidence interval:
- -10.243778  -3.346799
-sample estimates:
-mean in group sed mean in group top 
-         27.26926          34.06455 
-~~~~
-
-### ANOVA
-
-    anova(lm(CN ~ pos, data = leaf))
-
-~~~~
-Analysis of Variance Table
-
-Response: CN
-          Df Sum Sq Mean Sq F value    Pr(>F)    
-pos        1 230.88 230.880  18.999 0.0003785 ***
-Residuals 18 218.74  12.152                      
-~~~~
  
 ## Analysis of the Effect of Position on Percent N
 
+### Statistical Tests of the Difference in position == 0
+    
+##### Calculate the difference in Percent N
+    
+    diff.percN <- leaf$percN[leaf$pos == "top"] - leaf$percN[leaf$pos == "sed"]
+
+#### Test the difference between the "top" and "sed" samples == 0
+  
+    t.test(diff.percN, mu = 0)
+
+#==============================   
+    
+    One Sample t-test
+    
+    data:  diff.percN
+    t = -0.18297, df = 9, p-value = 0.8589
+    alternative hypothesis: true mean is not equal to 0
+    95 percent confidence interval:
+      -0.2138206  0.1818206
+    sample estimates:
+      mean of x 
+    -0.016 
+    
+#============================== 
+  
     par(las = 1, lwd = 1)
     plot(percN ~ pos, data = leaf, ylim = c(0, 2), ylab = "Percent N", xlab = " ", col = "gray", axes = F)
     axis(2, cex.lab = 1.5)
@@ -128,40 +149,34 @@ Residuals 18 218.74  12.152
 
 ![Percent N by leaf Position](../output/plots/percN_by_position.jpg)
 
-### T test
-
-    t.test(percN ~ pos, data = leaf)
-
-
-~~~~
- Welch Two Sample t-test
-
-data:  percN by pos
-t = 0.1983, df = 17.077, p-value = 0.8452
-alternative hypothesis: true difference in means is not equal to 0
-95 percent confidence interval:
- -0.1542146  0.1862146
-sample estimates:
-mean in group sed mean in group top 
-            1.582             1.566 
-            
-~~~~
-
-### ANOVA
-
-    anova(lm(percN ~ pos, data = leaf))
-
-~~~~
-Analysis of Variance Table
-
-Response: percN
-          Df  Sum Sq  Mean Sq F value Pr(>F)
-pos        1 0.00128 0.001280  0.0393 0.8451
-Residuals 18 0.58620 0.032567    
-~~~~
 
 ## Analysis of the Effect of Position on Percent C
 
+### Statistical Tests of the Difference in position == 0
+    
+##### Calculate the difference in Percent C
+    
+    diff.percC <- leaf$percC[leaf$pos == "top"] - leaf$percC[leaf$pos == "sed"]
+
+#### Test the difference between the "top" and "sed" samples == 0
+  
+    t.test(diff.percC, mu = 0)
+
+#==============================   
+    
+    One Sample t-test
+    
+    data:  diff.percC
+    t = 8.4037, df = 9, p-value = 1.49e-05
+    alternative hypothesis: true mean is not equal to 0
+    95 percent confidence interval:
+      5.936414 10.309586
+    sample estimates:
+      mean of x 
+    8.123 
+    
+#============================== 
+    
     par(las = 1)
     plot(percC ~ pos, data = leaf, ylim = c(0, 50), ylab = "Percent C", xlab = " ", col = "gray", axes = F)
     axis(2)
