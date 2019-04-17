@@ -200,7 +200,7 @@ $Top
     tapply(fungal_C_mass, erg$Position, sd)
 
 ~~~~
-# Fungal C Mass per Leaf (mg)
+# Fungal C Mass (mg C/ g AFDM leaf)
 $Sed
     Min.  1st Qu.   Median     Mean    3rd Qu.     Max.     SD
     3.987   6.036   8.491      10.301  14.764     22.421    6.185319
@@ -215,7 +215,7 @@ $Top
      tapply(fungal_N_mass, erg$Position, sd)
 
 ~~~~
-# Fungal N Mass per Leaf (mg)
+# Fungal N Mass (mg C / g AFDM leaf)
        $Sed
      Min.    1st Qu.   Median     Mean   3rd Qu.  Max.      SD
      0.6027  0.9124    1.2836    1.5572  2.2318   3.3892    0.9349901 
@@ -236,14 +236,24 @@ To complete the remaining calculations, you need to run the code in the mass_los
 
 The percent of the final leaf C mass that is in fungi:
  
-    #perc_fungal_C <- (fungal_C_mass / disc_C_mass_final) * 100 
+    fungal_mass_leaf <- (1 / 5) * erg$Erg_per_leaf # 1 mg fungal mass / 5 ug ergosterl mass, where fungal mass is in mg/leaf
 
-The below numbers are correctbut are based on when the fungal C mass was per leaf.  Above that was recalculated as per g AFDM so a new fungal C mass per leaf object needs to be calculated and used to correct the formula for perc_fungal_C 
-
-    #tapply(perc_fungal_C, erg$Position, summary)
-    #tapply(perc_fungal_C, erg$Position, sd)
+The carbon mass (mg/leaf) of the fungi on the leaves would be:
+ 
+    fungal_C_mass <- fungal_mass_leaf * 0.43
     
-~~~~
+The nitrogen mass (mg/leaf) of the fungi on the leaves would be:
+
+    fungal_N_mass <- fungal_mass_leaf * 0.065
+
+    perc_fungal_C <- (fungal_C_mass / disc_C_mass_final) * 100 
+
+
+    tapply(perc_fungal_C, erg$Position, summary)
+    tapply(perc_fungal_C, erg$Position, sd)
+
+#============================== 
+    
 # Percent of the final C mass of each leaf disc that is in fungal C
 
 $Sed
@@ -254,9 +264,8 @@ $Top
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD
   3.189   5.141   5.237   5.602   5.987   9.258 1.566612 
 
-
-~~~~
-
+#===============================
+  
 ## Test of % Fungal Carbon by Position
 ### Statistical Tests of the Difference in position == 0
 
@@ -301,14 +310,13 @@ Figure: Percent of the the final leaf C mass in fungal C mass
 
 The percent of the final leaf N mass that is in fungi:
  
-    #perc_fungal_N <- (fungal_N_mass / disc_N_mass_final) * 100 
+    perc_fungal_N <- (fungal_N_mass / disc_N_mass_final) * 100 
 
-The below numbers are correctbut are based on when the fungal C mass was per leaf.  Above that was recalculated as per g AFDM so a new fungal C mass per leaf object needs to be calculated and used to correct the formula for perc_fungal_N 
-
-    #tapply(perc_fungal_N, erg$Position, summary)
-    #tapply(perc_fungal_N, erg$Position, sd)
+    tapply(perc_fungal_N, erg$Position, summary)
+    tapply(perc_fungal_N, erg$Position, sd)
     
-~~~~
+#===============================
+    
 # Percent of the final C mass of each leaf disc that is in fungal C
 
     $Sed
@@ -319,8 +327,7 @@ The below numbers are correctbut are based on when the fungal C mass was per lea
     Min. 1st Qu.  Median    Mean 3rd Qu.    Max.   SD
     13.08   21.53   23.85   24.45   27.68   35.40  6.024858 
     
-
-~~~~
+#===============================
 
 ## Test of % Fungal Carbon by Position
 ### Statistical Tests of the Difference in position == 0

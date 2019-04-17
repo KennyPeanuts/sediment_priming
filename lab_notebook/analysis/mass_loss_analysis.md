@@ -93,6 +93,7 @@ Since there were different numbers of leaves in the crucibles `final.AFDM` is th
     $Top
     Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD         N
     1.920   2.315   2.580   2.677   3.125   3.540  0.5362904  10
+    
 #==================================================
 
 ###  Determine Mass Lost
@@ -104,6 +105,7 @@ Since there were different numbers of leaves in the crucibles `final.AFDM` is th
     tapply(AFDM.loss * 1000, leaf.final$Position, length)
  
 #=======================================
+    
     AFDM Loss from each postion (mg)
 
     $Sed
@@ -113,6 +115,7 @@ Since there were different numbers of leaves in the crucibles `final.AFDM` is th
     $Top
     Min.  1st Qu.   Median     Mean  3rd Qu.     Max.  SD        N
     0.001111 0.416100 0.961100 0.864400 1.226000 1.621000  0.5362904 10
+
 #=======================================
  
 ## Statistical Analysis
@@ -126,6 +129,7 @@ Since there were different numbers of leaves in the crucibles `final.AFDM` is th
 Using a t-test of the difference between the leaves on the top and sed is the best approach since it does not treat the leaves in the different positions to be independent but tests if their difference is not equal to 0, which would indicate that one position is consistently greater or lesser.
     
 #============================== 
+    
     One Sample t-test
     
     data:  diff.AFDM.loss
@@ -136,6 +140,7 @@ Using a t-test of the difference between the leaves on the top and sed is the be
     sample estimates:
       mean of x 
     -0.0002366667 
+    
 #============================== 
 
 #### Plot of the difference in AFDM loss between the top and sed leaves
@@ -249,6 +254,7 @@ $Top
 Using a t-test of the difference between the leaves on the top and sed is the best approach since it does not treat the leaves in the different positions to be independent but tests if their difference is not equal to 0, which would indicate that one position is consistently greater or lesser.
     
 #============================== 
+   
     One Sample t-test
 
     data:  diff.C.mass.loss
@@ -259,6 +265,7 @@ Using a t-test of the difference between the leaves on the top and sed is the be
     sample estimates:
     mean of x 
    -0.304441 
+    
 #============================== 
 
 #### Plot of the difference in C mass loss between the top and sed leaves
