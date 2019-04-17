@@ -12,6 +12,8 @@
  * 20 June 2018 - KF - added analysis on the amount of N mass in the Fungi at the end of the experiment
  * 21 June 2018 - KF - Calculted the amount of N the leaves should have lost if there was no immobilization (i.e., assuming the CN did not change during decomposition).
  * 22 June 2018 - KF - Did stats on fungal mass, fungal C, and fungal N
+ * 17 April 2019 - KF - re-analyzed the significance of ergosterol:w
+by location using the difference between the top and the sediment leaves and then tested if mean == 0 with a t-test. Made new plots.
 
 
 ### Description
@@ -76,7 +78,31 @@ $Top
  
  
 ## Analysis of the Effect of Position on Mass Normalized Ergosterol
+### Statistical Tests of the Difference in position == 0
 
+##### Calculate the difference in CN
+
+    diff.Erg_mass_norm <- erg$Erg_mass_norm[erg$Position == "Top"] - erg$Erg_mass_norm[erg$Position == "Sed"]
+  
+#### Test the difference between the "top" and "sed" samples == 0
+  
+    t.test(diff.Erg_mass_norm, mu = 0)
+  
+#==============================   
+  
+    One Sample t-test
+  
+    data:  diff.Erg_mass_norm
+    t = 5.2436, df = 9, p-value = 0.0005322
+    alternative hypothesis: true mean is not equal to 0
+    95 percent confidence interval:
+      98.30883 247.49180
+    sample estimates:
+    mean of x 
+      172.9003
+      
+  #============================== 
+  
     par(las = 1, cex = 1.2, mar = c(4, 5, 4, 5))
     plot(Erg_mass_norm ~ Position, data = erg, ylim = c(0, 550), ylab = "Ergosterol (ug/g AFDM)", xlab = "", col = 8, axes = F)
     axis(2)
@@ -88,23 +114,6 @@ $Top
     dev.off()
 
 ![Mass Normalized Ergosterol by leaf Position](../output/plots/erg_mass_norm_by_position.jpg)
-
-### T-test
-
-    t.test(Erg_mass_norm ~ Position, data = erg)
-
-~~~~
- Welch Two Sample t-test
-
-data:  Erg_mass_norm by Position
-t = -5.1216, df = 17.848, p-value = 7.328e-05
-alternative hypothesis: true difference in means is not equal to 0
-95 percent confidence interval:
- -243.8690 -101.9316
-sample estimates:
-mean in group Sed mean in group Top 
-         119.7838          292.6841 
-~~~~
 
  
 ## Analysis of the Effect of Position on Area Normalized Ergosterol
@@ -118,25 +127,6 @@ mean in group Sed mean in group Top
     dev.off()
 
 ![Percent N by leaf Position](../output/plots/Erg_area_norm_by_position.jpg)
-
-### T test
-
-    t.test(Erg_area_norm ~ Position, data = erg)
-
-
-~~~~
-  Welch Two Sample t-test
-
-data:  Erg_area_norm by Position
-t = -4.529, df = 12.783, p-value = 0.0005905
-alternative hypothesis: true difference in means is not equal to 0
-95 percent confidence interval:
- -26.690215  -9.430595
-sample estimates:
-mean in group Sed mean in group Top 
-         9.934036         27.994441 
-
-~~~~
 
 ## Calculation of the mass of C in fungal biomass
 ### Background information
@@ -178,25 +168,32 @@ $Top
 
 ~~~~
   
-##### Test of Fungal Biomass by Position
-  
-    t.test(fungal_mass ~ Position, data = erg)
-  
-~~~~
-# t test of fungal biomass by position
-  
-  Welch Two Sample t-test
+## Test of Fungal Biomass by Position
+### Statistical Tests of the Difference in position == 0
 
-data:  fungal_mass by Position
-t = -4.529, df = 12.783, p-value = 0.0005905
-alternative hypothesis: true difference in means is not equal to 0
-95 percent confidence interval:
-  -0.15281623 -0.05399537
-sample estimates:
-  mean in group Sed mean in group Top 
-0.05687785        0.16028365 
+##### Calculate the difference in Fungal Biomass
 
-~~~~
+    diff.fungal_mass <- fungal_mass[erg$Position == "Top"] - fungal_mass[erg$Position == "Sed"]
+  
+#### Test the difference between the "top" and "sed" samples == 0
+  
+    t.test(diff.fungal_mass, mu = 0)
+  
+#==============================   
+  
+    One Sample t-test
+    
+    data:  diff.fungal_mass
+    t = 4.2412, df = 9, p-value = 0.002171
+    alternative hypothesis: true mean is not equal to 0
+    95 percent confidence interval:
+      0.04825107 0.15856052
+    sample estimates:
+      mean of x 
+    0.1034058 
+      
+#============================== 
+      
   
     tapply(fungal_C_mass, erg$Position, summary)
     tapply(fungal_C_mass, erg$Position, sd)
@@ -259,24 +256,31 @@ $Top
 ~~~~
 
 ## Test of % Fungal Carbon by Position
+### Statistical Tests of the Difference in position == 0
+
+##### Calculate the difference in Percent Fungal C
+
+    diff.perc_fungal_C <- perc_fungal_C[erg$Position == "Top"] - perc_fungal_C[erg$Position == "Sed"]
   
-    t.test(perc_fungal_C ~ erg$Position)
-
-~~~~
-
- Welch Two Sample t-test
-
-data:  perc_fungal_C by erg$Position
-t = -3.4985, df = 17.414, p-value = 0.002672
-alternative hypothesis: true difference in means is not equal to 0
-95 percent confidence interval:
- -4.345464 -1.079654
-sample estimates:
-mean in group Sed mean in group Top 
-         2.889725          5.602283 
-
-~~~~
- 
+#### Test the difference between the "top" and "sed" samples == 0
+  
+    t.test(diff.perc_fungal_C, mu = 0)
+  
+#==============================   
+    
+    One Sample t-test
+    
+    data:  diff.perc_fungal_C
+    t = 3.5535, df = 9, p-value = 0.006182
+    alternative hypothesis: true mean is not equal to 0
+    95 percent confidence interval:
+      0.9857556 4.4393615
+    sample estimates:
+      mean of x 
+    2.712559 
+      
+#============================== 
+    
     par(las = 1)
     plot(perc_fungal_C ~ erg$Position, ylim = c(0, 10), ylab = "Percent of Final Leaf C Mass in Fungal C", xlab = "", col = 8, axes = F)
     axis(2)
@@ -315,23 +319,31 @@ The percent of the final leaf N mass that is in fungi:
 ~~~~
 
 ## Test of % Fungal Carbon by Position
+### Statistical Tests of the Difference in position == 0
+
+##### Calculate the difference in Percent Fungal N
+
+    diff.perc_fungal_N <- perc_fungal_N[erg$Position == "Top"] - perc_fungal_N[erg$Position == "Sed"]
   
-    t.test(perc_fungal_N ~ erg$Position)
-
-~~~~
-
-      Welch Two Sample t-test
+#### Test the difference between the "top" and "sed" samples == 0
+  
+    t.test(diff.perc_fungal_N, mu = 0)
+  
+#==============================   
     
-    data:  perc_fungal_N by erg$Position
-    t = -5.1132, df = 17.896, p-value = 7.399e-05
-    alternative hypothesis: true difference in means is not equal to 0
+    One Sample t-test
+    
+    data:  diff.perc_fungal_N
+    t = 5.1836, df = 9, p-value = 0.0005766
+    alternative hypothesis: true mean is not equal to 0
     95 percent confidence interval:
-      -20.225377  -8.441749
+      8.078293 20.588833
     sample estimates:
-      mean in group Sed mean in group Top 
-    10.11698          24.45054 
-
-~~~~
+      mean of x 
+    14.33356 
+      
+#============================== 
+    
  
     par(las = 1)
     plot(perc_fungal_N ~ erg$Position, ylim = c(0, 50), ylab = "Percent of Final Leaf N Mass in Fungal C", xlab = "", col = 8, axes = F)
@@ -399,9 +411,9 @@ Mean mass-based CN of a leaf disc at the beginning of the experiment
 ~~~~
 # The estimated mass of N that would have been lost from a single leaf disc if the microbial community had not immobilized released DIN (mg)
       
-SED:
+      SED:
       0.01527134
-TOP
+      TOP
       0.008627398
 ~~~~
         
