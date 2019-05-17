@@ -27,7 +27,7 @@ Details on the experimental set-up and execution can be found: [https://github.c
     cn <- read.table("data/leaf_disc_CN.csv", header = T, sep = ",")
     init_om <- read.table("data/inital_om.csv", header = T, sep = ",")
 
-### Determine Average inital leaf mass
+### Determine Average inital leaf AFDM mass
 
 The initial leaf mass samples consisted of 10 leaves
 
@@ -36,7 +36,7 @@ The initial leaf mass samples consisted of 10 leaves
     mean.init.mass <- mean(sing.init.leaf.mass)
 
 ~~~~
-# mean mass of a single leaf prior to the beginning the exp (g)
+# mean AFDM mass of a single leaf prior to the beginning the exp (g)
   
 > mean.init.mass
 [1] 0.003541111
