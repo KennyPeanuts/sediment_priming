@@ -113,8 +113,9 @@ Since the locations in each bottle are not independent of each other, I calculat
     boxplot(mean.tough.sed, mean.tough.top, ylim = c(0, 60), ylab = "Toughness (Grams Required to Puncture the Leaf)", xlab = " ", col = 8 )
     text(1, mean(mean.tough.sed), "*", cex = 2)
     text(2, mean(mean.tough.top), "*", cex = 2)
-    axis(1, c("Sediment Contact", "No Sed. Contact"), at = c(1, 2))
-    dev.copy(jpeg, "./output/plots/toughness.jpg")
+    #axis(1) , c("Sediment Contact", "No Sed. Contact"), at = c(1, 2))
+    #dev.copy(jpeg, "./output/plots/toughness.jpg")
+    dev.copy(jpeg, "./output/plots/manuscript_figures/toughness_ms.jpg")
     dev.off()
 
 ![Boxplot mass required to puncture the leaf](../output/plots/toughness.jpg)

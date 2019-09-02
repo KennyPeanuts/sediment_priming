@@ -65,7 +65,7 @@ $top
      tapply(leaf$percC, leaf$pos, summary)
      tapply(leaf$percC, leaf$pos, sd)
 
-~~~~
+#======================
 $sed
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
   31.04   35.67   36.86   36.90   38.60   41.86  3.060007
@@ -73,7 +73,7 @@ $sed
 $top
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD
   43.59   44.45   45.21   45.02   45.40   46.28  0.847074
-~~~~
+#=======================
 
 ## Analysis of the Effect of Position on CN
 ### Statistical Tests of the Difference in position == 0
@@ -139,12 +139,15 @@ $top
     
 #============================== 
   
-    par(las = 1, lwd = 1)
-    plot(percN ~ pos, data = leaf, ylim = c(0, 2), ylab = "Percent N", xlab = " ", col = "gray", axes = F)
-    axis(2, cex.lab = 1.5)
-    axis(1, c("Sediment Contact", "No Sed. Contact"), at = c(1, 2), cex.lab = 1.5)
+    par(las = 1, lwd = 1, cex = 1.2)
+    plot(percN ~ pos, data = leaf, ylim = c(0, 2), ylab = "Percent Leaf Disc N", xlab = " ", col = "gray", axes = F)
+    text(1, mean(leaf$percN[leaf$pos == "sed"]), "*", cex = 2)
+    text(2, mean(leaf$percN[leaf$pos == "top"]), "*", cex = 2)
+    axis(2, cex.lab = 2.5)
+    axis(1, c("Sediment Contact", "No Sed. Contact"), at = c(1, 2), cex.lab = 2.5)
     box()
-    dev.copy(jpeg, "./output/plots/percN_by_position.jpg")
+    #dev.copy(jpeg, "./output/plots/percN_by_position.jpg")
+    dev.copy(jpeg, "./output/plots/manuscript_figures/percN_by_position_ms.jpg")
     dev.off()
 
 ![Percent N by leaf Position](../output/plots/percN_by_position.jpg)
@@ -186,6 +189,16 @@ $top
     dev.off()
 
 ![Percent C by leaf Position](../output/plots/percC_by_position.jpg)
+
+    par(las = 1, lwd = 1, cex = 1.2)
+    plot(percC ~ pos, data = leaf, ylim = c(0, 50), ylab = "Percent Leaf Disc C", xlab = " ", col = "gray", axes = F)
+    text(1, mean(leaf$percC[leaf$pos == "sed"]), "*", cex = 2)
+    text(2, mean(leaf$percC[leaf$pos == "top"]), "*", cex = 2)
+    axis(2, cex.lab = 2.5)
+    #axis(1, c("Sediment Contact", "No Sed. Contact"), at = c(1, 2), cex.lab = 2.5)
+    box()
+    dev.copy(jpeg, "./output/plots/manuscript_figures/percC_by_position_ms.jpg")
+    dev.off()
 
 ### T test
 

@@ -197,12 +197,12 @@ The initial leaf disc masses are calculated by dividing the total sample AFDM ma
     sd(disc_C_mass_init)
     length(disc_C_mass_init)
 
-~~~~
+##############
 # Estimated carbon mass of a single leaf disc prior to incubation (mg)
  
 Min. 1st Qu.  Median    Mean 3rd Qu.    Max.     SD         N
   1.283   1.499   1.597   1.594   1.656   1.899  0.1884964  9
-~~~~
+##############
     
     disc_mass_init <- (init_om$om.mass[init_om$sample == "leaf"] / init_om$leaf.num[init_om$sample == "leaf"]) * 1000 # converted to mg 
 
@@ -213,14 +213,14 @@ Min. 1st Qu.  Median    Mean 3rd Qu.    Max.     SD         N
     summary(disc_C_mass_init)
     sd(disc_C_mass_init)
     length(disc_C_mass_init)
-
-~~~~
+    
+####################
 # Estimated carbon mass of a single leaf disc prior to incubation (mg)
 
  Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    SD        N
   1.286   1.503   1.602   1.598   1.661   1.905  0.1890618 9
  
-~~~~
+####################
  
 #### Change in C Mass During Incubation
  
@@ -230,7 +230,7 @@ Min. 1st Qu.  Median    Mean 3rd Qu.    Max.     SD         N
     tapply(delta_C_mass, leaf.final$Position, sd)
     tapply(delta_C_mass, leaf.final$Position, length)
 
-~~~~
+################
 # Change in the mass of C in a leaf disc (mg)
  
 $Sed
@@ -241,7 +241,7 @@ $Top
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  SD         N
 0.04139 0.20780 0.45140 0.39530 0.54850 0.70970  0.2301806  10
 
-~~~~~
+################
  
 ## Statistical Analysis
 
@@ -286,7 +286,7 @@ This is done the same way as was done with C above.
     tapply(disc_N_mass_final, leaf.final$Position, sd)
     tapply(disc_N_mass_final, leaf.final$Position, length)
 
-~~~~
+##################
 # Estimated N mass of a single leaf disc (mg)
  
 $Sed
@@ -297,7 +297,7 @@ $Top
    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. SD           N
 0.02496 0.03467 0.03793 0.04256 0.05270 0.06726 0.013079830  10
 
-~~~~
+###############
  
 ##### Initial N mass of a single leaf 
 
@@ -307,13 +307,13 @@ $Top
     sd(disc_N_mass_init)
     length(disc_N_mass_init)
 
-~~~~
+####################
 # Initial N mass of a single leaf disc prior to incubation (mg)
  
  Min. 1st Qu.  Median    Mean 3rd Qu.    Max.   SD           N
 0.02807 0.03280 0.03497 0.03488 0.03625 0.04157 0.004125976  9
 
-~~~~
+####################
  
 #### Change in N mass following incuabation 
  
@@ -323,7 +323,7 @@ $Top
     tapply(delta_N_mass, leaf.final$Position, sd)
     tapply(delta_N_mass, leaf.final$Position, length)
 
-~~~~
+#==========================
 # Loss of N mass from a single leaf disc during the incubation (mg)
 
 $Sed
@@ -334,7 +334,7 @@ $Top
       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. SD           N
 -0.0323800 -0.0178200 -0.0030520 -0.0076760  0.0002059  0.0099200 0.013079830  10
 
-~~~~
+#================================
         
 ##### Calculate the difference in delta N mass loss betweeen top and sed
 
@@ -461,7 +461,8 @@ The results below based on position are not appropriate because the treat the le
     axis(2)
     axis(1, c("Sediment Contact", "No Sed. Contact"), at = c(1, 2))
     box()
-    dev.copy(jpeg, "./output/plots/mass_loss.jpg")
+    #dev.copy(jpeg, "./output/plots/mass_loss.jpg")
+    dev.copy(jpeg, "./output/plots/manuscript_figures/mass_loss_manuscript.jpg")
     dev.off()
 
 [Mass lost from leaves in the sediments or water column](../output/plots/mass_loss.jpg)
