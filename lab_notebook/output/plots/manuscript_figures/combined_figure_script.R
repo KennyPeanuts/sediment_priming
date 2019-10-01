@@ -48,7 +48,7 @@ Before running this code, you need to make all the objects in:
     
 ## Code for high-res figure
     
-    tiff("./output/plots/manuscript_figures/combined_highres.tiff", width = 4.5, height = 4.5, res = 500, units = "in")
+    tiff("./output/plots/manuscript_figures/combined_highres.tiff", width = 4.5, height = 4.5, res = 700, units = "in")
     par(las = 1, mfcol = c(2, 2), cex = 0.5)
     # toughness
     par(mar = c(2, 4, 4, 2))
