@@ -68,11 +68,14 @@ Summary Statistics for the mass (g) required to puncture the leaves on the sedim
     bottle <- LETTERS[1:10]
     bottle <- as.factor(bottle)
     diff.mean.tough <- mean.tough.top - mean.tough.sed
+    diff.mean.tough <- mean.tough.top - mean.tough.sed
+    percDiff.mean.tough <- ((mean.tough.top - mean.tough.sed) / mean.tough.top) * 100
 
-    diff.tough <- data.frame(bottle, diff.mean.tough)
+    diff.tough <- data.frame(bottle, diff.mean.tough, percDiff.mean.tough)
     
 ### Analysis of the effect of position on mass (g) required to puncture the leaves
 #### Using t-test 
+    
     t.test(mean.tough.sed, mean.tough.top)
 
 ~~~~
@@ -96,6 +99,9 @@ Since the locations in each bottle are not independent of each other, I calculat
     t.test(diff.tough$diff.mean.tough, mu = 0)
 
 #############################
+    
+    # Mass Difference 
+    
     One Sample t-test
     
     data:  diff.tough$diff.mean.tough
@@ -107,6 +113,26 @@ Since the locations in each bottle are not independent of each other, I calculat
       mean of x 
     16.35971 
 #############################
+    
+    t.test(diff.tough$percDiff.mean.tough, mu = 0)
+    
+#############################
+    
+    #Percent Difference 
+    
+    One Sample t-test
+    
+    data:  diff.tough$percDiff.mean.tough
+    t = 4.2094, df = 9, p-value = 0.002275
+    alternative hypothesis: true mean is not equal to 0
+    95 percent confidence interval:
+    17.91118 59.52643
+    sample estimates:
+    mean of x 
+    38.7188 
+
+############################
+
 ### Plots
  
     par(las = 1, cex = 1.2, mar = c(4, 5, 4, 5))
